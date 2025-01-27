@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { bookings } from "./bookingsData"; // Import the data
+import CreateBookingDialog from "./createBooking";
 
 interface FilterAndSearchProps {
   onFilterChange: (filteredData: typeof bookings) => void;
@@ -15,6 +16,8 @@ export default function FilterAndSearch({
   const [filterStatus, setFilterStatus] = React.useState("All");
   const [searchResults, setSearchResults] = React.useState<typeof bookings>([]);
   const [showSearchBox, setShowSearchBox] = React.useState(false);
+
+  const [createBookingDialog, setCreateBookingDialog] = React.useState(false);
 
   // Handle filter change
   React.useEffect(() => {
@@ -90,22 +93,34 @@ export default function FilterAndSearch({
           position: "relative",
         }}
       >
-        <TextField
-          variant="outlined"
-          placeholder="Search by customer name"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          size="small"
-          fullWidth
-          InputProps={{
-            sx: {
-              height: 40,
-              "& input": {
-                fontSize: "14px",
+        <Box className="flex flex-col gap-2 w-full items-end">
+          <TextField
+            variant="outlined"
+            placeholder="Search by customer name"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            size="small"
+            fullWidth
+            InputProps={{
+              sx: {
+                height: 40,
+                "& input": {
+                  fontSize: "14px",
+                },
               },
-            },
-          }}
-        />
+            }}
+          />
+          <Button
+            variant="contained"
+            onClick={() => setCreateBookingDialog(true)}
+          >
+            Create Booking
+          </Button>
+          <CreateBookingDialog
+            open={createBookingDialog}
+            onClose={() => setCreateBookingDialog(false)}
+          />
+        </Box>
 
         {/* Search Results Box */}
         {showSearchBox && (
@@ -150,6 +165,8 @@ export default function FilterAndSearch({
           </Box>
         )}
       </Box>
+
+      {/* create booking dialog */}
     </Box>
   );
 }

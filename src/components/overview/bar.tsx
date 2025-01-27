@@ -61,12 +61,12 @@ const Bar: React.FC = () => {
         </Box>
       </Box>
 
-      <Box className="w-1/3">
+      <Box className=" w-1/2 lg:w-1/3 h-full">
         <TextField
           variant="outlined"
           placeholder="Search by customer name"
           fullWidth
-          sx={{ width: "100%", height: "50px" }}
+          sx={{ width: "100%" }}
         />
       </Box>
     </Box>
