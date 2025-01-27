@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/sidebar/sidebar.tsx";
 import Top from "./components/Top/Top.tsx";
 import Dashboard from "./pages/Dashboard";
-import Employees from "./pages/Employees";
 import Rooms from "./pages/Rooms";
 import Customers from "./pages/Customers";
 import Bookings from "./pages/Bookings";
@@ -26,7 +25,6 @@ const App: React.FC = () => {
           <main className="p-8 z-10 ">
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/employees" element={<Employees />} />
               <Route path="/rooms" element={<Rooms />} />
               <Route path="/customers" element={<Customers />} />
               <Route path="/bookings" element={<Bookings />} />

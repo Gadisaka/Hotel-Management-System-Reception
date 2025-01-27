@@ -108,7 +108,11 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
 
           {/* Actions */}
           <Box display="flex" justifyContent="flex-end" mt={3}>
-            <Button onClick={() => onClose()} color="secondary">
+            <Button
+              variant="outlined"
+              onClick={() => onClose()}
+              color="secondary"
+            >
               Cancel
             </Button>
             <Button
@@ -143,6 +147,7 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
         open={selectRoomDialogOpen}
         onClose={() => setSelectRoomDialogOpen(false)}
         onSelectRoom={handleSelectRoom}
+        rooms={[]} // Pass the rooms array here
       />
 
       {/* search customer  */}

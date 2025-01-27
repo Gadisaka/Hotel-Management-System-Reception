@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { RoomData } from "./roomData";
+import { MenuItem } from "@mui/material";
 
 interface EditRoomProps {
   room: RoomData;
@@ -29,37 +30,19 @@ export default function EditRoom({ room, onCancel }: EditRoomProps) {
   return (
     <Box sx={{ padding: 2 }}>
       <TextField
-        label="Room Number"
-        name="roomNumber"
-        value={editedRoom.roomNumber}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Type"
-        name="type"
-        value={editedRoom.type}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Price"
-        name="price"
-        value={editedRoom.price}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
+        select
         label="Status"
         name="status"
         value={editedRoom.status}
         onChange={handleChange}
         fullWidth
-        margin="normal"
-      />
+      >
+        {["Available", "Unavailable", "Maintenance"].map((status) => (
+          <MenuItem key={status} value={status}>
+            {status}
+          </MenuItem>
+        ))}
+      </TextField>
       <Box
         sx={{
           display: "flex",
@@ -75,14 +58,6 @@ export default function EditRoom({ room, onCancel }: EditRoomProps) {
             Cancel
           </Button>
         </Box>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={onCancel}
-          sx={{ bgcolor: "red", marginTop: 2 }}
-        >
-          Delete
-        </Button>
       </Box>
     </Box>
   );

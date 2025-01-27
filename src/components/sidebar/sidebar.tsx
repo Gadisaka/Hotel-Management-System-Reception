@@ -7,7 +7,6 @@ import {
   Dashboard,
   Book,
   Bed,
-  Badge,
   Person,
   People,
 } from "@mui/icons-material";
@@ -112,26 +111,6 @@ export default function Sidebar() {
             >
               <Bed />
               <Typography variant="button">Rooms</Typography>
-            </Item>
-          </Link>
-
-          <Link to="/employees" style={{ textDecoration: "none" }}>
-            <Item
-              sx={{
-                gap: 2,
-                display: "flex",
-                alignItems: "center",
-                paddingLeft: 5,
-                backgroundColor:
-                  location.pathname === "/employees"
-                    ? "primary.light"
-                    : "inherit",
-                color: location.pathname === "/employees" ? "#fff" : "inherit",
-                boxShadow: "none",
-              }}
-            >
-              <Badge />
-              <Typography variant="button">Employees</Typography>
             </Item>
           </Link>
 

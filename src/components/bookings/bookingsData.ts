@@ -15,7 +15,7 @@ export const bookings: BookingData[] = [
     customerName: "John Doe",
     roomNumber: "R101",
     startDate: "2025-01-10",
-    endDate: "2025-01-15",
+    endDate: "2021-01-15",
     payment: "$500.00",
     status: "Confirmed",
   },

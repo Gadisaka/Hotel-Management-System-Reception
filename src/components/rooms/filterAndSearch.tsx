@@ -16,22 +16,8 @@ export default function FilterAndSearch({
   const [filterType, setFilterType] = React.useState("All");
   const [searchResults, setSearchResults] = React.useState<typeof rooms>([]);
   const [showSearchBox, setShowSearchBox] = React.useState(false);
-  const [addRoomDialogOpen, setAddRoomDialogOpen] = React.useState(false); // New state for AddRoom dialog
 
   // Handler to add a new room
-  const handleAddRoom = (newRoom: {
-    id: number;
-    roomNumber: number;
-    type: string;
-    price: number;
-    status: string;
-    floor: number;
-    startNumber?: number;
-    count?: number;
-  }) => {
-    rooms.push(newRoom); // Simulate adding the room to the dataset
-    onFilterChange([...rooms]); // Update the parent with the new data
-  };
 
   // Existing combined filtering logic
   React.useEffect(() => {
@@ -205,16 +191,6 @@ export default function FilterAndSearch({
         </Box>
 
         {/* Add Room Button */}
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setAddRoomDialogOpen(true)}
-            sx={{ textTransform: "capitalize", fontSize: "14px" }}
-          >
-            Add Room
-          </Button>
-        </Box>
       </Box>
     </Box>
   );

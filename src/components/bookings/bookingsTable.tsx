@@ -7,12 +7,23 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { BookingData } from "./bookingsData";
+import React from "react";
+import ViewBooking from "./viewBooking";
 
 interface BookingTableProps {
   data: BookingData[];
 }
 
 export default function BookingTable({ data }: BookingTableProps) {
+  const [bookingDetailsDialogOpen, setBookingDetailsDialogOpen] =
+    React.useState(false);
+  const [selectedBooking, setSelectedBooking] =
+    React.useState<BookingData | null>(null);
+
+  const handleRowClick = (booking: BookingData) => {
+    setSelectedBooking(booking);
+    setBookingDetailsDialogOpen(true);
+  };
   return (
     <Box>
       <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
@@ -30,7 +41,12 @@ export default function BookingTable({ data }: BookingTableProps) {
           </TableHead>
           <TableBody>
             {data.map((booking) => (
-              <TableRow key={booking.id}>
+              <TableRow
+                key={booking.id}
+                hover
+                onClick={() => handleRowClick(booking)}
+                sx={{ cursor: "pointer" }}
+              >
                 <TableCell>{booking.id}</TableCell>
                 <TableCell>{booking.customerName}</TableCell>
                 <TableCell>{booking.roomNumber}</TableCell>
@@ -43,6 +59,13 @@ export default function BookingTable({ data }: BookingTableProps) {
           </TableBody>
         </Table>
       </TableContainer>
+      {selectedBooking && (
+        <ViewBooking
+          open={bookingDetailsDialogOpen}
+          onClose={() => setBookingDetailsDialogOpen(false)}
+          booking={selectedBooking}
+        />
+      )}
     </Box>
   );
 }

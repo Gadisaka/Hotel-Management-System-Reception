@@ -1,30 +1,13 @@
 import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, Box, Button } from "@mui/material";
+import { rooms, RoomData } from "../rooms/roomData";
 
 interface DialogProps {
   open: boolean;
   onClose: () => void;
   onSelectRoom: (room: string) => void;
+  rooms: RoomData[];
 }
-
-const fakeRooms = {
-  single: Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    status: i % 2 === 0 ? "occupied" : "available",
-  })),
-  double: Array.from({ length: 15 }, (_, i) => ({
-    id: i + 1,
-    status: i % 3 === 0 ? "occupied" : "available",
-  })),
-  triple: Array.from({ length: 10 }, (_, i) => ({
-    id: i + 1,
-    status: i % 4 === 0 ? "occupied" : "available",
-  })),
-  vip: Array.from({ length: 5 }, (_, i) => ({
-    id: i + 1,
-    status: i % 2 === 0 ? "occupied" : "available",
-  })),
-};
 
 const SelectRoomDialog: React.FC<DialogProps> = ({
   open,
@@ -32,56 +15,44 @@ const SelectRoomDialog: React.FC<DialogProps> = ({
   onSelectRoom,
 }) => {
   const [roomType, setRoomType] = useState<
-    "single" | "double" | "triple" | "vip"
-  >("single");
-  const rooms = fakeRooms[roomType];
+    "Single" | "Double" | "Triple" | "VIP"
+  >("Single");
+  const filteredRooms = rooms.filter((room) => room.type === roomType);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>Select Room</DialogTitle>
       <DialogContent>
         <Box mb={2} display="flex" gap={2}>
-          <Button
-            variant={roomType === "single" ? "contained" : "outlined"}
-            onClick={() => setRoomType("single")}
-          >
+          <Button variant="outlined" onClick={() => setRoomType("Single")}>
             Single
           </Button>
-          <Button
-            variant={roomType === "double" ? "contained" : "outlined"}
-            onClick={() => setRoomType("double")}
-          >
+          <Button variant="outlined" onClick={() => setRoomType("Double")}>
             Double
           </Button>
-          <Button
-            variant={roomType === "triple" ? "contained" : "outlined"}
-            onClick={() => setRoomType("triple")}
-          >
+          <Button variant="outlined" onClick={() => setRoomType("Triple")}>
             Triple
           </Button>
-          <Button
-            variant={roomType === "vip" ? "contained" : "outlined"}
-            onClick={() => setRoomType("vip")}
-          >
+          <Button variant="outlined" onClick={() => setRoomType("VIP")}>
             VIP
           </Button>
         </Box>
         <Box display="grid" gridTemplateColumns="repeat(5, 1fr)" gap={1}>
-          {rooms.map((room) => (
+          {filteredRooms.map((room) => (
             <Button
               key={room.id}
               variant="outlined"
-              disabled={room.status === "occupied"}
+              disabled={room.status !== "Available"}
               onClick={() => {
-                onSelectRoom(`${roomType} Room ${room.id}`);
+                onSelectRoom(`${roomType} Room ${room.roomNumber}`);
                 onClose();
               }}
               style={{
                 backgroundColor:
-                  room.status === "occupied" ? "#f0f0f0" : "#e0ffe0",
+                  room.status !== "Available" ? "#f0f0f0" : "#e0ffe0",
               }}
             >
-              {room.id}
+              {room.roomNumber}
             </Button>
           ))}
         </Box>

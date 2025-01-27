@@ -1,7 +1,6 @@
 import { FiberManualRecord } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Paper,
   Table,
   TableBody,
@@ -11,34 +10,24 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import ViewBooking from "../bookings/viewBooking";
+import React from "react";
+import { BookingData } from "../bookings/bookingsData";
 
-interface BookingData {
-  id: string;
-  fullName: string;
-  roomNumber: string;
-  status: string;
-  startingDate: Date;
-  endDate: Date;
+interface BookingTableProps {
+  data: BookingData[];
 }
-const bookings: BookingData[] = [
-  {
-    id: "1",
-    fullName: "John Doe",
-    roomNumber: "101",
-    status: "expired",
-    startingDate: new Date("2023-01-01"),
-    endDate: new Date("2023-01-10"),
-  },
-  {
-    id: "2",
-    fullName: "Jane Smith",
-    roomNumber: "102",
-    status: "expired",
-    startingDate: new Date("2023-02-01"),
-    endDate: new Date("2023-02-10"),
-  },
-];
-const ExpiredBookings = () => {
+
+const ExpiredBookings = ({ data }: BookingTableProps) => {
+  const [bookingDetailsDialogOpen, setBookingDetailsDialogOpen] =
+    React.useState(false);
+  const [selectedBooking, setSelectedBooking] =
+    React.useState<BookingData | null>(null);
+
+  const handleRowClick = (booking: BookingData) => {
+    setSelectedBooking(booking);
+    setBookingDetailsDialogOpen(true);
+  };
   return (
     <Box className="w-full max-h-fit p-2  bg-white">
       <TableContainer
@@ -59,27 +48,43 @@ const ExpiredBookings = () => {
               <TableCell>Status</TableCell>
               <TableCell>Starting Date</TableCell>
               <TableCell>End Date</TableCell>
-              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {bookings.map((booking: BookingData) => (
-              <TableRow key={booking.id}>
-                <TableCell>{booking.fullName}</TableCell>
-                <TableCell>{booking.roomNumber}</TableCell>
-                <TableCell>{booking.status}</TableCell>
-                <TableCell>{booking.startingDate.toDateString()}</TableCell>
-                <TableCell>{booking.endDate.toDateString()}</TableCell>
-                <TableCell>
-                  <Button variant="contained" color="primary">
-                    View
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {data
+              .filter(
+                (booking: BookingData) =>
+                  new Date(booking.endDate) < new Date() &&
+                  booking.status === "Confirmed"
+              )
+              .map((booking: BookingData) => (
+                <TableRow
+                  key={booking.id}
+                  onClick={() => handleRowClick(booking)}
+                  hover
+                  sx={{ cursor: "pointer" }}
+                >
+                  <TableCell>{booking.customerName}</TableCell>
+                  <TableCell>{booking.roomNumber}</TableCell>
+                  <TableCell>{booking.status}</TableCell>
+                  <TableCell>
+                    {new Date(booking.startDate).toDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(booking.endDate).toDateString()}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
+      {selectedBooking && (
+        <ViewBooking
+          open={bookingDetailsDialogOpen}
+          onClose={() => setBookingDetailsDialogOpen(false)}
+          booking={selectedBooking}
+        />
+      )}
     </Box>
   );
 };

@@ -3,6 +3,8 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { customers } from "./customersData";
+import ViewCustomer from "./viewCustomer";
+import CreateCustomerDialog from "./createCustomer";
 
 interface FilterAndSearchProps {
   onFilterChange: (filteredData: typeof customers) => void;
@@ -17,7 +19,14 @@ export default function FilterAndSearch({
     []
   );
   const [showSearchBox, setShowSearchBox] = React.useState(false);
+  const [customerDialogOpen, setCustomerDialogOpen] = React.useState(false);
+  const [createCustomerDialogOpen, setCreateCustomerDialogOpen] =
+    React.useState(false);
 
+  const handleCustomerCreated = (fullName: string) => {
+    console.log(fullName);
+    setCustomerDialogOpen(false);
+  };
   // Handle filter change
   React.useEffect(() => {
     let results = customers;
@@ -92,22 +101,35 @@ export default function FilterAndSearch({
           position: "relative",
         }}
       >
-        <TextField
-          variant="outlined"
-          placeholder="Search by customer name"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          size="small"
-          fullWidth
-          InputProps={{
-            sx: {
-              height: 40,
-              "& input": {
-                fontSize: "14px",
+        <Box className="w-full justify-center gap-2 flex flex-col items-end">
+          <TextField
+            variant="outlined"
+            placeholder="Search by customer name"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            size="small"
+            fullWidth
+            InputProps={{
+              sx: {
+                height: 40,
+                "& input": {
+                  fontSize: "14px",
+                },
               },
-            },
-          }}
-        />
+            }}
+          />
+          <Button
+            variant="contained"
+            onClick={() => setCreateCustomerDialogOpen(true)}
+          >
+            Create Customer
+          </Button>
+          <CreateCustomerDialog
+            open={createCustomerDialogOpen}
+            onClose={() => setCreateCustomerDialogOpen(false)}
+            onCustomerCreated={handleCustomerCreated}
+          />
+        </Box>
 
         {/* Search Results Box */}
         {showSearchBox && (
@@ -136,16 +158,20 @@ export default function FilterAndSearch({
                     "&:last-child": { borderBottom: "none" },
                     cursor: "pointer",
                     "&:hover": { backgroundColor: "#f0f0f0" },
+                    display: "flex",
+                    justifyContent: "space-between",
                   }}
                   onClick={() => {
-                    setSearchText(result.firstName);
+                    setCustomerDialogOpen(true);
                     setShowSearchBox(false);
                   }}
                 >
-                  <strong>Name:</strong> {result.firstName} {result.lastName}{" "}
-                  <br />
-                  <strong>Phone:</strong> {result.phone} <br />
-                  <strong>Status:</strong> {result.status}
+                  <Box>
+                    <strong>Name:</strong> {result.firstName} {result.lastName}{" "}
+                    <br />
+                    <strong>Phone:</strong> {result.phone} <br />
+                    <strong>Status:</strong> {result.status} <br />
+                  </Box>
                 </Box>
               ))
             ) : (
@@ -154,6 +180,11 @@ export default function FilterAndSearch({
           </Box>
         )}
       </Box>
+      <ViewCustomer
+        open={customerDialogOpen}
+        onClose={() => setCustomerDialogOpen(false)}
+        customer={searchResults.length > 0 ? searchResults[0] : null}
+      />
     </Box>
   );
 }

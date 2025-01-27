@@ -2,7 +2,6 @@ import React from "react";
 import { FiberManualRecord } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Paper,
   Table,
   TableBody,
@@ -12,67 +11,23 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { BookingData } from "../bookings/bookingsData";
+import ViewBooking from "../bookings/viewBooking";
 
-interface BookingData {
-  id: string;
-  fullName: string;
-  roomNumber: string;
-  status: string;
-  startingDate: Date;
-  endDate: Date;
+interface RecentBooksProps {
+  bookings: BookingData[];
 }
-const bookings: BookingData[] = [
-  {
-    id: "1",
-    fullName: "John Doe",
-    roomNumber: "101",
-    status: "Checked In",
-    startingDate: new Date("2023-10-01"),
-    endDate: new Date("2023-10-05"),
-  },
-  {
-    id: "2",
-    fullName: "Jane Smith",
-    roomNumber: "102",
-    status: "Checked Out",
-    startingDate: new Date("2023-09-25"),
-    endDate: new Date("2023-09-30"),
-  },
-  {
-    id: "3",
-    fullName: "Alice Johnson",
-    roomNumber: "103",
-    status: "Reserved",
-    startingDate: new Date("2023-10-10"),
-    endDate: new Date("2023-10-15"),
-  },
-  {
-    id: "4",
-    fullName: "Bob Brown",
-    roomNumber: "104",
-    status: "Checked In",
-    startingDate: new Date("2023-10-03"),
-    endDate: new Date("2023-10-07"),
-  },
-  {
-    id: "5",
-    fullName: "Charlie Davis",
-    roomNumber: "105",
-    status: "Cancelled",
-    startingDate: new Date("2023-10-05"),
-    endDate: new Date("2023-10-10"),
-  },
-  {
-    id: "6",
-    fullName: "Charlie Davis",
-    roomNumber: "105",
-    status: "Cancelled",
-    startingDate: new Date("2023-10-05"),
-    endDate: new Date("2023-10-10"),
-  },
-];
 
-const RecentBookings = () => {
+const RecentBookings = ({ bookings }: RecentBooksProps) => {
+  const [bookingDetailsDialogOpen, setBookingDetailsDialogOpen] =
+    React.useState(false);
+  const [selectedBooking, setSelectedBooking] =
+    React.useState<BookingData | null>(null);
+
+  const handleRowClick = (booking: BookingData) => {
+    setSelectedBooking(booking);
+    setBookingDetailsDialogOpen(true);
+  };
   return (
     <Box className="flex gap-5 justify-between h-full w-full">
       {/* active customers card */}
@@ -95,21 +50,24 @@ const RecentBookings = () => {
                 <TableCell>Status</TableCell>
                 <TableCell>Starting Date</TableCell>
                 <TableCell>End Date</TableCell>
-                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {bookings.map((booking: BookingData) => (
-                <TableRow key={booking.id}>
-                  <TableCell>{booking.fullName}</TableCell>
+              {bookings.slice(0, 6).map((booking: BookingData) => (
+                <TableRow
+                  key={booking.id}
+                  hover
+                  onClick={() => handleRowClick(booking)}
+                  sx={{ cursor: "pointer" }}
+                >
+                  <TableCell>{booking.customerName}</TableCell>
                   <TableCell>{booking.roomNumber}</TableCell>
                   <TableCell>{booking.status}</TableCell>
-                  <TableCell>{booking.startingDate.toDateString()}</TableCell>
-                  <TableCell>{booking.endDate.toDateString()}</TableCell>
                   <TableCell>
-                    <Button variant="contained" color="primary">
-                      View
-                    </Button>
+                    {new Date(booking.startDate).toDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(booking.endDate).toDateString()}
                   </TableCell>
                 </TableRow>
               ))}
@@ -117,6 +75,13 @@ const RecentBookings = () => {
           </Table>
         </TableContainer>
       </Box>
+      {selectedBooking && (
+        <ViewBooking
+          open={bookingDetailsDialogOpen}
+          onClose={() => setBookingDetailsDialogOpen(false)}
+          booking={selectedBooking}
+        />
+      )}
     </Box>
   );
 };
