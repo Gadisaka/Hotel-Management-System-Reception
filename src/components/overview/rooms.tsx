@@ -1,4 +1,4 @@
-import { People } from "@mui/icons-material";
+import { FiberManualRecord } from "@mui/icons-material";
 import { Box, Typography, styled } from "@mui/material";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LinearProgress, {
@@ -61,16 +61,19 @@ const Rooms = () => {
         let icon;
         switch (room.type) {
           case "Single":
-            icon = <People />;
+            icon = <FiberManualRecord className="text-green-500" />;
             break;
           case "Double":
-            icon = <People />;
+            icon = <FiberManualRecord sx={{ color: "orange" }} />;
+
             break;
           case "Triple":
-            icon = <People />;
+            icon = <FiberManualRecord sx={{ color: "magenta" }} />;
+
             break;
           case "VIP":
-            icon = <People />;
+            icon = <FiberManualRecord sx={{ color: "red" }} />;
+
             break;
           default:
             icon = <BarChartIcon />;
