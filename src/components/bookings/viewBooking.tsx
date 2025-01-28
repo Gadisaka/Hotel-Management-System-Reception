@@ -60,42 +60,44 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
           </p>
         </Box>
       </DialogContent>
-      <DialogActions className="flex w-full justify-between items-center">
-        <Button onClick={onClose} variant="outlined" color="secondary">
-          Close
-        </Button>
-        {booking?.status === "Pending" ? (
-          <Button
-            onClick={() =>
-              booking && changeBookingStatus(booking.id, "Confirmed")
-            }
-            variant="contained"
-            color="primary"
-          >
-            Confirm
+      <DialogActions>
+        <Box className="flex w-full justify-between items-center">
+          <Button onClick={onClose} variant="outlined" color="secondary">
+            Close
           </Button>
-        ) : booking?.status === "Confirmed" ? (
-          <Box className="flex gap-2">
+          {booking?.status === "Pending" ? (
             <Button
               onClick={() =>
-                booking && changeBookingStatus(booking.id, "Completed")
+                booking && changeBookingStatus(booking.id, "Confirmed")
               }
               variant="contained"
-              color="success"
+              color="primary"
             >
-              Complete
+              Confirm
             </Button>
-            <Button
-              onClick={() =>
-                booking && changeBookingStatus(booking.id, "Cancelled")
-              }
-              variant="contained"
-              color="error"
-            >
-              cancel
-            </Button>
-          </Box>
-        ) : null}
+          ) : booking?.status === "Confirmed" ? (
+            <Box className="flex gap-2">
+              <Button
+                onClick={() =>
+                  booking && changeBookingStatus(booking.id, "Completed")
+                }
+                variant="contained"
+                color="success"
+              >
+                Check-Out
+              </Button>
+              <Button
+                onClick={() =>
+                  booking && changeBookingStatus(booking.id, "Cancelled")
+                }
+                variant="contained"
+                color="error"
+              >
+                Cancel
+              </Button>
+            </Box>
+          ) : null}
+        </Box>
       </DialogActions>
     </Dialog>
   );

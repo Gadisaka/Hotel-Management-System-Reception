@@ -10,14 +10,12 @@ import {
   FormControlLabel,
   Radio,
   Typography,
-  Input,
 } from "@mui/material";
-import UploadIcon from "@mui/icons-material/Upload";
 
 interface CreateCustomerDialogProps {
   open: boolean;
   onClose: () => void;
-  onCustomerCreated: (fullName: string) => void;
+  onCustomerCreated: (fullName: string, id: string) => void;
 }
 
 const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
@@ -29,12 +27,13 @@ const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [sex, setSex] = useState("male");
-  const [image, setImage] = React.useState<string>("");
 
+  //update this during integration
   const handleSubmit = () => {
     if (firstName && lastName && phone) {
       const fullName = `${firstName} ${lastName}`;
-      onCustomerCreated(fullName);
+      const id = `${firstName.toLowerCase()}-${lastName.toLowerCase()}`; // Example ID generation
+      onCustomerCreated(fullName, id);
       onClose();
     } else {
       alert("Please fill in all required fields.");
@@ -47,44 +46,7 @@ const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
       <DialogContent>
         <Box display="flex" flexDirection="column" gap={2}>
           {/* Image Upload */}
-          <Input
-            inputProps={{ accept: "image/*" }}
-            style={{ display: "none" }}
-            id="raised-button-file"
-            type="file"
-            onChange={(e) => {
-              const target = e.target as HTMLInputElement;
-              if (target.files && target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                  if (event.target && event.target.result) {
-                    setImage(event.target.result as string);
-                  }
-                };
-                reader.readAsDataURL(target.files[0]);
-              }
-            }}
-          />
-          <label htmlFor="raised-button-file">
-            <Button
-              component="span"
-              variant="outlined"
-              color="primary"
-              startIcon={<UploadIcon />}
-              sx={{ marginBottom: 2 }}
-            >
-              Upload Image
-            </Button>
-          </label>
-          {image && (
-            <Box pb={2}>
-              <img
-                src={image}
-                alt="Uploaded"
-                style={{ width: "100px", height: "100px", marginBottom: 2 }}
-              />
-            </Box>
-          )}
+
           {/* First Name */}
           <TextField
             label="First Name"

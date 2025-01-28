@@ -1,5 +1,5 @@
 export interface customersData {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   phone: string;
@@ -10,7 +10,7 @@ export interface customersData {
 
 export const customers: customersData[] = [
   {
-    id: 1,
+    id: "1",
     firstName: "John",
     lastName: "Doe",
     phone: "123-456-7890",
@@ -30,7 +30,7 @@ export const customers: customersData[] = [
     ],
   },
   {
-    id: 2,
+    id: "2",
     firstName: "Jane",
     lastName: "Smith",
     phone: "234-567-8901",
@@ -38,7 +38,7 @@ export const customers: customersData[] = [
     status: "Inactive",
   },
   {
-    id: 3,
+    id: "3",
     firstName: "Michael",
     lastName: "Johnson",
     phone: "345-678-9012",
@@ -49,7 +49,7 @@ export const customers: customersData[] = [
     ],
   },
   {
-    id: 4,
+    id: "4",
     firstName: "Emily",
     lastName: "Davis",
     phone: "456-789-0123",
@@ -57,7 +57,7 @@ export const customers: customersData[] = [
     status: "Active",
   },
   {
-    id: 5,
+    id: "5",
     firstName: "David",
     lastName: "Brown",
     phone: "567-890-1234",
@@ -65,7 +65,7 @@ export const customers: customersData[] = [
     status: "Inactive",
   },
   {
-    id: 6,
+    id: "6",
     firstName: "Sarah",
     lastName: "Wilson",
     phone: "678-901-2345",
@@ -77,7 +77,7 @@ export const customers: customersData[] = [
     ],
   },
   {
-    id: 7,
+    id: "7",
     firstName: "Chris",
     lastName: "Taylor",
     phone: "789-012-3456",
@@ -85,7 +85,7 @@ export const customers: customersData[] = [
     status: "Inactive",
   },
   {
-    id: 8,
+    id: "8",
     firstName: "Jessica",
     lastName: "Anderson",
     phone: "890-123-4567",
@@ -93,7 +93,7 @@ export const customers: customersData[] = [
     status: "Active",
   },
   {
-    id: 9,
+    id: "9",
     firstName: "Daniel",
     lastName: "Thomas",
     phone: "901-234-5678",
@@ -101,7 +101,7 @@ export const customers: customersData[] = [
     status: "Active",
   },
   {
-    id: 10,
+    id: "10",
     firstName: "Laura",
     lastName: "Jackson",
     phone: "012-345-6789",

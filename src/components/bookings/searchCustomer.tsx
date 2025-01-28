@@ -11,8 +11,13 @@ import { customers } from "../customers/customersData";
 interface DialogProps {
   open: boolean;
   onClose: () => void;
+  onSelectedCustomer: (fullName: string, id: string) => void;
 }
-const SearchCustomer: React.FC<DialogProps> = ({ open, onClose }) => {
+const SearchCustomer: React.FC<DialogProps> = ({
+  open,
+  onClose,
+  onSelectedCustomer,
+}) => {
   const [showSearchBox, setShowSearchBox] = React.useState(false);
   const [searchText, setSearchText] = React.useState("");
   const [searchResults, setSearchResults] = React.useState<typeof customers>(
@@ -98,7 +103,10 @@ const SearchCustomer: React.FC<DialogProps> = ({ open, onClose }) => {
                     }}
                     onClick={() => {
                       setSearchText(result.firstName);
+                      const fullName = result.firstName + result.lastName;
+                      onSelectedCustomer(fullName, result.id);
                       setShowSearchBox(false);
+                      onClose();
                     }}
                   >
                     <strong>Name:</strong> {result.firstName} {result.lastName}{" "}

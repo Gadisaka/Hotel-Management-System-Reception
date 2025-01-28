@@ -1,7 +1,27 @@
 import { People } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import { Box, Typography, styled } from "@mui/material";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import LinearProgress, {
+  linearProgressClasses,
+} from "@mui/material/LinearProgress";
+
+const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 10,
+  borderRadius: 5,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: theme.palette.grey[200],
+    ...theme.applyStyles("dark", {
+      backgroundColor: theme.palette.grey[800],
+    }),
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 5,
+    backgroundColor: "#1a90ff",
+    ...theme.applyStyles("dark", {
+      backgroundColor: "#308fe8",
+    }),
+  },
+}));
 
 interface Data {
   type: string;
@@ -17,17 +37,17 @@ const rooms: Data[] = [
   },
   {
     type: "Double",
-    occupied: 123,
+    occupied: 12,
     all: 200,
   },
   {
     type: "Triple",
-    occupied: 123,
+    occupied: 193,
     all: 200,
   },
   {
     type: "VIP",
-    occupied: 123,
+    occupied: 50,
     all: 200,
   },
 ];
@@ -55,10 +75,13 @@ const Rooms = () => {
           default:
             icon = <BarChartIcon />;
         }
+
+        const value: number = (room.occupied / room.all) * 100;
+
         return (
           <Box
             key={room.type}
-            className=" flex flex-col justify-between bg-white gap-5 w-full p-5 h-full"
+            className=" flex flex-col justify-between bg-white gap-5 w-full p-5 h-[200px] "
           >
             <Box className="flex justify-between h-full w-full  items-center">
               <Typography
@@ -81,6 +104,16 @@ const Rooms = () => {
                 /{room.all}
               </Typography>
             </Box>
+            <BorderLinearProgress
+              variant="determinate"
+              value={value}
+              sx={{
+                [`& .${linearProgressClasses.bar}`]: {
+                  backgroundColor:
+                    value > 90 ? "red" : value < 40 ? "blue-500" : "orange",
+                },
+              }}
+            />
           </Box>
         );
       })}

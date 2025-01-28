@@ -154,6 +154,10 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
       <SearchCustomer
         open={searchCustomerDialogOpen}
         onClose={() => setSearchCustomerDialogOpen(false)}
+        onSelectedCustomer={(fullName: string, id: string) => {
+          setSelectedCustomer(fullName);
+          console.log(id);
+        }}
       />
     </Box>
   );
