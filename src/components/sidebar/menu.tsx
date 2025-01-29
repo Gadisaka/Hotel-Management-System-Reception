@@ -10,7 +10,7 @@ import {
   People,
 } from "@mui/icons-material";
 
-import { useSidebarStore } from "@/store/store";
+import { useSidebarStore } from "@/zustand/store";
 
 export default function Menu() {
   const location = useLocation();

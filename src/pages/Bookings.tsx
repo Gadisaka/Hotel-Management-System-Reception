@@ -2,9 +2,18 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import FilterAndSearch from "@/components/bookings/FilterAndSearch";
 import BookingTable from "@/components/bookings/bookingsTable";
-import { bookings } from "@/components/bookings/bookingsData";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store";
+import { fetchBookingsThunk } from "@/Features/Bookings/bookingSlice";
 
 const Bookings: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { bookings } = useSelector((state: RootState) => state.bookings);
+
+  React.useEffect(() => {
+    dispatch(fetchBookingsThunk());
+  }, [dispatch]);
+
   const [filteredData, setFilteredData] = React.useState(bookings);
 
   return (

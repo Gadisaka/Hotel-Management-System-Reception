@@ -3,10 +3,21 @@ import * as React from "react";
 import RecentBookings from "./recentBookings";
 import Rooms from "./rooms";
 import ExpiredBookings from "./expiredBookings";
-import { bookings } from "../bookings/bookingsData";
 import TotalIncome from "./totalIncome";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../app/store";
+import { fetchBookingsThunk } from "@/Features/Bookings/bookingSlice";
 
 const Overview: React.FC = () => {
+  // fetch booking data
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { bookings } = useSelector((state: RootState) => state.bookings);
+
+  React.useEffect(() => {
+    dispatch(fetchBookingsThunk());
+  }, [dispatch]);
+
   return (
     <Box className="flex w-full flex-col pb-3 lg:flex-row gap-3 justify-between">
       <Box className=" w-full flex flex-col gap-5 lg:w-[60%]">

@@ -8,14 +8,21 @@ import {
   Box,
   Paper,
 } from "@mui/material";
-import { useAuthStore } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../app/store";
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+} from "../Features/Auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const setToken = useAuthStore((state) => state.setToken);
+  const dispatch: AppDispatch = useDispatch();
+  const { isLoading, error } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
   let debounceTimeout: NodeJS.Timeout | null = null;
 
   const role = "RECEPTIONIST";
@@ -28,8 +35,7 @@ const LoginPage: React.FC = () => {
     }
 
     debounceTimeout = setTimeout(async () => {
-      setIsLoading(true);
-      setError(null);
+      dispatch(loginStart()); // Set loading state
 
       try {
         const response = await fetch(
@@ -49,15 +55,16 @@ const LoginPage: React.FC = () => {
         }
 
         const data = await response.json();
-        setToken(data.token);
+        dispatch(loginSuccess(data.token));
+        localStorage.setItem("token", data.token);
+        // Save token in Redux store
+        navigate("/");
       } catch (err: unknown) {
         if (err instanceof Error) {
-          setError(err.message);
+          dispatch(loginFailure(err.message)); // Set error state
         } else {
-          setError("An unknown error occurred");
+          dispatch(loginFailure("An unknown error occurred")); // Set error state
         }
-      } finally {
-        setIsLoading(false);
       }
     }, 300);
   };

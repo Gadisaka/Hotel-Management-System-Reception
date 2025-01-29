@@ -13,15 +13,14 @@ import Customers from "./pages/Customers";
 import Bookings from "./pages/Bookings";
 import Account from "./pages/Account.tsx";
 import Menu from "./components/sidebar/menu.tsx";
-import LoginPage from "./pages/Login"; // Import the LoginPage
-import { useAuthStore } from "./store/store.ts"; // Zustand store for authentication
+import LoginPage from "./pages/Login";
 
 const App: React.FC = () => {
-  const token = useAuthStore((state) => state.token); // Check authentication status
+  const token = localStorage.getItem("token");
 
   return (
     <Router>
-      {token ? ( // Show sidebar and layout only if authenticated
+      {token ? (
         <div className="flex justify-between">
           <div className="top-0 left-0 h-screen sticky z-50">
             <Sidebar />
@@ -44,7 +43,6 @@ const App: React.FC = () => {
           </div>
         </div>
       ) : (
-        // Show Login page for unauthenticated users
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<Navigate to="/login" />} />

@@ -2,22 +2,25 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { bookings } from "./bookingsData"; // Import the data
 import CreateBookingDialog from "./createBooking";
+import { BookingData } from "./bookingsData";
+import { RootState } from "@/app/store";
+import { useSelector } from "react-redux";
 
 interface FilterAndSearchProps {
-  onFilterChange: (filteredData: typeof bookings) => void;
+  onFilterChange: (filteredData: BookingData[]) => void;
 }
-
 export default function FilterAndSearch({
   onFilterChange,
 }: FilterAndSearchProps) {
   const [searchText, setSearchText] = React.useState("");
   const [filterStatus, setFilterStatus] = React.useState("All");
-  const [searchResults, setSearchResults] = React.useState<typeof bookings>([]);
+  const [searchResults, setSearchResults] = React.useState<BookingData[]>([]);
   const [showSearchBox, setShowSearchBox] = React.useState(false);
 
   const [createBookingDialog, setCreateBookingDialog] = React.useState(false);
+
+  const { bookings } = useSelector((state: RootState) => state.bookings);
 
   // Handle filter change
   React.useEffect(() => {
@@ -28,7 +31,7 @@ export default function FilterAndSearch({
     }
 
     onFilterChange(results);
-  }, [filterStatus, onFilterChange]);
+  }, [filterStatus, onFilterChange, bookings]);
 
   // Handle search results
   React.useEffect(() => {
@@ -42,7 +45,7 @@ export default function FilterAndSearch({
       setSearchResults(results);
       setShowSearchBox(true);
     }
-  }, [searchText]);
+  }, [searchText, bookings]);
 
   return (
     <Box

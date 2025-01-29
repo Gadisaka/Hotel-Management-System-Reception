@@ -1,3 +1,5 @@
+import { BookingData } from "../bookings/bookingsData";
+
 export interface customersData {
   id: string;
   firstName: string;
@@ -5,7 +7,11 @@ export interface customersData {
   phone: string;
   sex: "Male" | "Female";
   status: string;
-  bookingHistory?: { date: string; roomNumber: number; status: string }[];
+  idCardImage?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+  disabilities?: string;
+  bookingHistory?: BookingData[] | [];
 }
 
 export const customers: customersData[] = [
@@ -16,18 +22,7 @@ export const customers: customersData[] = [
     phone: "123-456-7890",
     sex: "Male",
     status: "Active",
-    bookingHistory: [
-      { date: "2023-01-15", roomNumber: 101, status: "Confirmed" },
-      { date: "2023-02-20", roomNumber: 102, status: "Pending" },
-      { date: "2023-01-15", roomNumber: 101, status: "Confirmed" },
-      { date: "2023-02-20", roomNumber: 102, status: "Pending" },
-      { date: "2023-01-15", roomNumber: 101, status: "Confirmed" },
-      { date: "2023-02-20", roomNumber: 102, status: "Pending" },
-      { date: "2023-01-15", roomNumber: 101, status: "Confirmed" },
-      { date: "2023-02-20", roomNumber: 102, status: "Pending" },
-      { date: "2023-01-15", roomNumber: 101, status: "Confirmed" },
-      { date: "2023-02-20", roomNumber: 102, status: "Pending" },
-    ],
+    bookingHistory: [],
   },
   {
     id: "2",
@@ -44,9 +39,7 @@ export const customers: customersData[] = [
     phone: "345-678-9012",
     sex: "Male",
     status: "Active",
-    bookingHistory: [
-      { date: "2023-03-10", roomNumber: 103, status: "Confirmed" },
-    ],
+    bookingHistory: [],
   },
   {
     id: "4",
@@ -71,10 +64,7 @@ export const customers: customersData[] = [
     phone: "678-901-2345",
     sex: "Female",
     status: "Active",
-    bookingHistory: [
-      { date: "2023-04-05", roomNumber: 104, status: "Confirmed" },
-      { date: "2023-05-15", roomNumber: 105, status: "Pending" },
-    ],
+    bookingHistory: [],
   },
   {
     id: "7",

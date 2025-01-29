@@ -9,6 +9,9 @@ import Paper from "@mui/material/Paper";
 import { BookingData } from "./bookingsData";
 import React from "react";
 import ViewBooking from "./viewBooking";
+import { CircularProgress, Typography } from "@mui/material";
+import { RootState } from "@/app/store";
+import { useSelector } from "react-redux";
 
 interface BookingTableProps {
   data: BookingData[];
@@ -20,6 +23,8 @@ export default function BookingTable({ data }: BookingTableProps) {
   const [selectedBooking, setSelectedBooking] =
     React.useState<BookingData | null>(null);
 
+  const { status } = useSelector((state: RootState) => state.bookings);
+
   const handleRowClick = (booking: BookingData) => {
     setSelectedBooking(booking);
     setBookingDetailsDialogOpen(true);
@@ -30,7 +35,6 @@ export default function BookingTable({ data }: BookingTableProps) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>Customer Name</TableCell>
               <TableCell>Room Number</TableCell>
               <TableCell>Start Date</TableCell>
@@ -39,24 +43,40 @@ export default function BookingTable({ data }: BookingTableProps) {
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {data.map((booking) => (
-              <TableRow
-                key={booking.id}
-                hover
-                onClick={() => handleRowClick(booking)}
-                sx={{ cursor: "pointer" }}
-              >
-                <TableCell>{booking.id}</TableCell>
-                <TableCell>{booking.customerName}</TableCell>
-                <TableCell>{booking.roomNumber}</TableCell>
-                <TableCell>{booking.startDate}</TableCell>
-                <TableCell>{booking.endDate}</TableCell>
-                <TableCell>{booking.payment}</TableCell>
-                <TableCell>{booking.status}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          {status === "loading" && (
+            <TableRow>
+              <TableCell colSpan={6}>
+                <Box display="flex" justifyContent="center" p={2} width="100%">
+                  <CircularProgress />
+                </Box>
+              </TableCell>
+            </TableRow>
+          )}
+          {status === "failed" && (
+            <Box display="flex" justifyContent="center" p={2}>
+              <Typography color="error">Failed to load bookings</Typography>
+            </Box>
+          )}
+
+          {status === "succeeded" && (
+            <TableBody>
+              {data.map((booking) => (
+                <TableRow
+                  key={booking.id}
+                  hover
+                  onClick={() => handleRowClick(booking)}
+                  sx={{ cursor: "pointer" }}
+                >
+                  <TableCell>{booking.customerName}</TableCell>
+                  <TableCell>{booking.roomNumber}</TableCell>
+                  <TableCell>{booking.startDate}</TableCell>
+                  <TableCell>{booking.endDate}</TableCell>
+                  <TableCell>{booking.payment}</TableCell>
+                  <TableCell>{booking.status}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
         </Table>
       </TableContainer>
       {selectedBooking && (

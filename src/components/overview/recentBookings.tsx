@@ -2,6 +2,7 @@ import React from "react";
 import { FiberManualRecord } from "@mui/icons-material";
 import {
   Box,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -13,6 +14,8 @@ import {
 } from "@mui/material";
 import { BookingData } from "../bookings/bookingsData";
 import ViewBooking from "../bookings/viewBooking";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 interface RecentBooksProps {
   bookings: BookingData[];
@@ -23,6 +26,8 @@ const RecentBookings = ({ bookings }: RecentBooksProps) => {
     React.useState(false);
   const [selectedBooking, setSelectedBooking] =
     React.useState<BookingData | null>(null);
+
+  const { status } = useSelector((state: RootState) => state.bookings);
 
   const handleRowClick = (booking: BookingData) => {
     setSelectedBooking(booking);
@@ -52,26 +57,47 @@ const RecentBookings = ({ bookings }: RecentBooksProps) => {
                 <TableCell>End Date</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {bookings.slice(0, 6).map((booking: BookingData) => (
-                <TableRow
-                  key={booking.id}
-                  hover
-                  onClick={() => handleRowClick(booking)}
-                  sx={{ cursor: "pointer" }}
-                >
-                  <TableCell>{booking.customerName}</TableCell>
-                  <TableCell>{booking.roomNumber}</TableCell>
-                  <TableCell>{booking.status}</TableCell>
-                  <TableCell>
-                    {new Date(booking.startDate).toDateString()}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(booking.endDate).toDateString()}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            {status === "loading" && (
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    p={2}
+                    width="100%"
+                  >
+                    <CircularProgress />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            )}
+            {status === "failed" && (
+              <Box display="flex" justifyContent="center" p={2}>
+                <Typography color="error">Failed to load bookings</Typography>
+              </Box>
+            )}
+            {status === "succeeded" && bookings.length > 0 && (
+              <TableBody>
+                {bookings.slice(0, 6).map((booking: BookingData) => (
+                  <TableRow
+                    key={booking.id}
+                    hover
+                    onClick={() => handleRowClick(booking)}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    <TableCell>{booking.customerName}</TableCell>
+                    <TableCell>{booking.roomNumber}</TableCell>
+                    <TableCell>{booking.status}</TableCell>
+                    <TableCell>
+                      {new Date(booking.startDate).toDateString()}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(booking.endDate).toDateString()}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
       </Box>

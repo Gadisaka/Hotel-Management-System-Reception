@@ -1,6 +1,7 @@
 import { FiberManualRecord } from "@mui/icons-material";
 import {
   Box,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -13,6 +14,8 @@ import {
 import ViewBooking from "../bookings/viewBooking";
 import React from "react";
 import { BookingData } from "../bookings/bookingsData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 interface BookingTableProps {
   data: BookingData[];
@@ -23,6 +26,8 @@ const ExpiredBookings = ({ data }: BookingTableProps) => {
     React.useState(false);
   const [selectedBooking, setSelectedBooking] =
     React.useState<BookingData | null>(null);
+
+  const { status } = useSelector((state: RootState) => state.bookings);
 
   const handleRowClick = (booking: BookingData) => {
     setSelectedBooking(booking);
@@ -50,32 +55,60 @@ const ExpiredBookings = ({ data }: BookingTableProps) => {
               <TableCell>End Date</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {data
-              .filter(
+          {status === "loading" && (
+            <TableRow>
+              <TableCell colSpan={6}>
+                <Box display="flex" justifyContent="center" p={2} width="100%">
+                  <CircularProgress />
+                </Box>
+              </TableCell>
+            </TableRow>
+          )}
+          {status === "failed" && (
+            <Box display="flex" justifyContent="center" p={2}>
+              <Typography color="error">Failed to load bookings</Typography>
+            </Box>
+          )}
+          {status === "succeeded" && (
+            <TableBody>
+              {data.filter(
                 (booking: BookingData) =>
                   new Date(booking.endDate) < new Date() &&
-                  booking.status === "Confirmed"
-              )
-              .map((booking: BookingData) => (
-                <TableRow
-                  key={booking.id}
-                  onClick={() => handleRowClick(booking)}
-                  hover
-                  sx={{ cursor: "pointer" }}
-                >
-                  <TableCell>{booking.customerName}</TableCell>
-                  <TableCell>{booking.roomNumber}</TableCell>
-                  <TableCell>{booking.status}</TableCell>
-                  <TableCell>
-                    {new Date(booking.startDate).toDateString()}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(booking.endDate).toDateString()}
+                  booking.status === "CONFIRMED"
+              ).length > 0 ? (
+                data
+                  .filter(
+                    (booking: BookingData) =>
+                      new Date(booking.endDate) < new Date() &&
+                      booking.status === "CONFIRMED"
+                  )
+                  .map((booking: BookingData) => (
+                    <TableRow
+                      key={booking.id}
+                      onClick={() => handleRowClick(booking)}
+                      hover
+                      sx={{ cursor: "pointer" }}
+                    >
+                      <TableCell>{booking.customerName}</TableCell>
+                      <TableCell>{booking.roomNumber}</TableCell>
+                      <TableCell>{booking.status}</TableCell>
+                      <TableCell>
+                        {new Date(booking.startDate).toDateString()}
+                      </TableCell>
+                      <TableCell>
+                        {new Date(booking.endDate).toDateString()}
+                      </TableCell>
+                    </TableRow>
+                  ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    No expired bookings
                   </TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
+              )}
+            </TableBody>
+          )}
         </Table>
       </TableContainer>
       {selectedBooking && (

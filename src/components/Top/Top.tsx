@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Avatar, IconButton } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
-import { useSidebarStore } from "@/store/store.js";
+import { useSidebarStore } from "@/zustand/store.js";
 import { Close, Menu as MenuIcon } from "@mui/icons-material";
 import Profile from "./Profile.js";
 

@@ -65,21 +65,23 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
           <Button onClick={onClose} variant="outlined" color="secondary">
             Close
           </Button>
-          {booking?.status === "Pending" ? (
+          {booking?.status === "PENDING" ? (
             <Button
               onClick={() =>
-                booking && changeBookingStatus(booking.id, "Confirmed")
+                booking &&
+                changeBookingStatus(parseInt(booking.id), "Confirmed")
               }
               variant="contained"
               color="primary"
             >
               Confirm
             </Button>
-          ) : booking?.status === "Confirmed" ? (
+          ) : booking?.status === "CONFIRMED" ? (
             <Box className="flex gap-2">
               <Button
                 onClick={() =>
-                  booking && changeBookingStatus(booking.id, "Completed")
+                  booking &&
+                  changeBookingStatus(parseInt(booking.id), "COMPLETED")
                 }
                 variant="contained"
                 color="success"
@@ -88,7 +90,8 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
               </Button>
               <Button
                 onClick={() =>
-                  booking && changeBookingStatus(booking.id, "Cancelled")
+                  booking &&
+                  changeBookingStatus(parseInt(booking.id), "CANCELLED")
                 }
                 variant="contained"
                 color="error"
