@@ -28,11 +28,10 @@ const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
   const [phone, setPhone] = useState("");
   const [sex, setSex] = useState("male");
 
-  //update this during integration
   const handleSubmit = () => {
     if (firstName && lastName && phone) {
       const fullName = `${firstName} ${lastName}`;
-      const id = `${firstName.toLowerCase()}-${lastName.toLowerCase()}`; // Example ID generation
+      const id = `${firstName.toLowerCase()}-${lastName.toLowerCase()}`;
       onCustomerCreated(fullName, id);
       onClose();
     } else {

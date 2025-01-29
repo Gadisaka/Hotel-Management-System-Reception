@@ -7,31 +7,16 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-
-interface Booking {
-  date: string;
-  roomNumber: number;
-  status: string;
-}
-
-interface Customer {
-  firstName: string;
-  lastName: string;
-  sex: string;
-  phone: string;
-  status: string;
-  bookingHistory?: Booking[]; // Made optional
-}
+import { customersData } from "./customersData";
 
 interface DialogProps {
   open: boolean;
   onClose: () => void;
-  customer: Customer | null; // Accept customer data or null
+  customer: customersData | null;
 }
 
 const ViewCustomer: React.FC<DialogProps> = ({ open, onClose, customer }) => {
-  if (!customer) return null; // Don't render anything if no customer data is provided
-
+  if (!customer) return null;
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>Customer Details</DialogTitle>
@@ -60,7 +45,7 @@ const ViewCustomer: React.FC<DialogProps> = ({ open, onClose, customer }) => {
               <ul>
                 {customer.bookingHistory.map((booking, index) => (
                   <li key={index}>
-                    {booking.date} - Room {booking.roomNumber} -{" "}
+                    {booking.startDate} - Room {booking.roomNumber} -{" "}
                     {booking.status}
                   </li>
                 ))}
