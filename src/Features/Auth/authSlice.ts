@@ -17,13 +17,16 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials: { username: string; password: string }, thunkAPI) => {
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
+      const response = await fetch(
+        "https://hotel-management-system-backend-yref.onrender.com/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
