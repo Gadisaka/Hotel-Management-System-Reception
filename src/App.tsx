@@ -14,9 +14,14 @@ import Bookings from "./pages/Bookings";
 import Account from "./pages/Account.tsx";
 import Menu from "./components/sidebar/menu.tsx";
 import LoginPage from "./pages/Login";
+import useAuthStore from "./zustand/store.ts";
 
 const App: React.FC = () => {
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+
+  // const token = useAuthStore((state) => state.token);
+
+  const token = useAuthStore((state) => state.token);
 
   return (
     <Router>

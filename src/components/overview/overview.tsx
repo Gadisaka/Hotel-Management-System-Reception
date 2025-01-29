@@ -7,6 +7,7 @@ import TotalIncome from "./totalIncome";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
 import { fetchBookingsThunk } from "@/Features/Bookings/bookingSlice";
+import { fetchRoomsThunk } from "@/Features/Rooms/roomSlice";
 
 const Overview: React.FC = () => {
   // fetch booking data
@@ -16,6 +17,10 @@ const Overview: React.FC = () => {
 
   React.useEffect(() => {
     dispatch(fetchBookingsThunk());
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    dispatch(fetchRoomsThunk());
   }, [dispatch]);
 
   return (

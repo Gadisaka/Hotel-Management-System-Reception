@@ -1,8 +1,8 @@
 import { FiberManualRecord } from "@mui/icons-material";
 import {
   Box,
-  CircularProgress,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -56,13 +56,27 @@ const ExpiredBookings = ({ data }: BookingTableProps) => {
             </TableRow>
           </TableHead>
           {status === "loading" && (
-            <TableRow>
-              <TableCell colSpan={6}>
-                <Box display="flex" justifyContent="center" p={2} width="100%">
-                  <CircularProgress />
-                </Box>
-              </TableCell>
-            </TableRow>
+            <TableBody>
+              {[...Array(5)].map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Skeleton variant="text" width="80%" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width="60%" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width="40%" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width="70%" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width="70%" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
           )}
           {status === "failed" && (
             <Box display="flex" justifyContent="center" p={2}>

@@ -4,6 +4,8 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -23,51 +25,45 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-interface Data {
-  type: string;
-  occupied: number;
-  all: number;
-}
-
-const rooms: Data[] = [
-  {
-    type: "Single",
-    occupied: 123,
-    all: 200,
-  },
-  {
-    type: "Double",
-    occupied: 12,
-    all: 200,
-  },
-  {
-    type: "Triple",
-    occupied: 193,
-    all: 200,
-  },
-  {
-    type: "VIP",
-    occupied: 50,
-    all: 200,
-  },
-];
-
 const Rooms = () => {
+  const { rooms } = useSelector((state: RootState) => state.rooms);
+
+  interface Room {
+    type: string;
+    occupied: number;
+    all: number;
+  }
+
+  const roomTypes = ["SINGLE", "DOUBLE", "TRIPLE", "VIP"];
+  const roomData: Room[] = roomTypes.map((type) => {
+    const roomsOfType = rooms.filter((room) => room.type === type);
+    const occupied = roomsOfType.filter(
+      (room) => room.status === "OCCUPIED"
+    ).length;
+    const all = roomsOfType.length;
+    return {
+      type,
+      occupied,
+      all,
+    };
+  });
+  console.log(roomData);
+
   return (
     <Box className="grid grid-cols-2 gap-5 justify-around items-center w-full h-full">
       {/* rooms data */}
 
-      {rooms.map((room) => {
+      {roomData.map((room) => {
         let icon;
         switch (room.type) {
-          case "Single":
+          case "SINGLE":
             icon = <FiberManualRecord className="text-green-500" />;
             break;
-          case "Double":
+          case "DOUBLE":
             icon = <FiberManualRecord sx={{ color: "orange" }} />;
 
             break;
-          case "Triple":
+          case "TRIPLE":
             icon = <FiberManualRecord sx={{ color: "magenta" }} />;
 
             break;

@@ -8,65 +8,23 @@ import {
   Box,
   Paper,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../app/store";
-import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-} from "../Features/Auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../zustand/store";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch: AppDispatch = useDispatch();
-  const { isLoading, error } = useSelector((state: RootState) => state.auth);
+  const { isLoading, error, login } = useAuthStore();
   const navigate = useNavigate();
-  let debounceTimeout: NodeJS.Timeout | null = null;
-
   const role = "RECEPTIONIST";
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout);
+    const success = await login(username, password, role);
+    if (success) {
+      navigate("/");
     }
-
-    debounceTimeout = setTimeout(async () => {
-      dispatch(loginStart()); // Set loading state
-
-      try {
-        const response = await fetch(
-          "https://hotel-management-system-backend-yref.onrender.com/auth/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username, password, role }),
-          }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Login failed");
-        }
-
-        const data = await response.json();
-        dispatch(loginSuccess(data.token));
-        localStorage.setItem("token", data.token);
-        // Save token in Redux store
-        navigate("/");
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          dispatch(loginFailure(err.message)); // Set error state
-        } else {
-          dispatch(loginFailure("An unknown error occurred")); // Set error state
-        }
-      }
-    }, 300);
   };
 
   return (
@@ -80,12 +38,6 @@ const LoginPage: React.FC = () => {
         >
           Sign in
         </Typography>
-        <Typography
-          variant="body2"
-          textAlign="center"
-          color="text.secondary"
-          gutterBottom
-        ></Typography>
 
         {error && (
           <Alert severity="error" className="mb-4">
