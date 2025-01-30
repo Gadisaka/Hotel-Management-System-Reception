@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
 import { fetchBookingsThunk } from "@/Features/Bookings/bookingSlice";
 import { fetchRoomsThunk } from "@/Features/Rooms/roomSlice";
+// import { fetchAccountDetailsThunk } from "@/Features/Account/accountSlice";
 
 const Overview: React.FC = () => {
   // fetch booking data
@@ -22,6 +23,8 @@ const Overview: React.FC = () => {
   React.useEffect(() => {
     dispatch(fetchRoomsThunk());
   }, [dispatch]);
+
+  // const { token } = useAuthStore();
 
   return (
     <Box className="flex w-full flex-col pb-3 lg:flex-row gap-3 justify-between">

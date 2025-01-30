@@ -5,11 +5,15 @@ import SelectRoomDialog from "../bookings/selectRoom";
 import CreateCustomerDialog from "../customers/createCustomer";
 import { customers, customersData } from "../customers/customersData";
 import ViewCustomer from "../customers/viewCustomer";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/app/store";
+import { fetchAccountDetailsThunk } from "@/Features/Account/accountSlice";
+import { AppDispatch } from "@/app/store";
 
-const user: string = "Abel";
 // afternoon if time  is past 12:00 pm and good morning if time is lessthan 12:00pm and soon
-const getGreeting: () => string = () => {
+const getGreeting: (user: string) => string = (user) => {
   const currentHour = new Date().getHours();
+
   if (currentHour < 12) {
     return `Good morning ${user} ☀️`;
   } else if (currentHour < 18) {
@@ -27,6 +31,16 @@ const Bar: React.FC = () => {
     React.useState(false);
   const [selectedCustomer, setSelectedCustomer] =
     React.useState<customersData | null>(null);
+  const dispatch: AppDispatch = useDispatch();
+
+  const { account } = useSelector((state: RootState) => state.account);
+  const id = localStorage.getItem("id");
+
+  React.useEffect(() => {
+    if (id) {
+      dispatch(fetchAccountDetailsThunk(id));
+    }
+  }, [id, dispatch]);
 
   const handleCustomerCreated = (fullName: string) => {
     //api here
@@ -58,7 +72,7 @@ const Bar: React.FC = () => {
     <Box className="bg-white w-full max-h-fit p-3  items-center gap-2 justify-between flex flex-col lg:flex-row px-4">
       <Box className=" flex flex-col gap-2 w-1/2">
         <Typography variant="h5" color="initial">
-          {getGreeting()}
+          {getGreeting(account?.firstName || "")}
         </Typography>
         <Box className="flex gap-2  flex-col lg:flex-row">
           <Button

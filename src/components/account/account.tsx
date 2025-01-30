@@ -12,39 +12,36 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
+import { Account } from "../../Features/Account/accountSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const AccountPage: React.FC = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [isChangingPassword, setIsChangingPassword] = React.useState(false);
 
-  interface UserData {
-    id: number;
-    firstName: string;
-    lastName: string;
-    image: string;
-    phone: string;
-    salary: number;
-    role: string;
-    password: string;
-    username: string;
-  }
+  const { account } = useSelector((state: RootState) => state.account);
+  console.log(account?.sex);
 
-  const user: UserData = {
-    id: 1,
+  const initialUser: Account = {
+    id: "1",
     firstName: "Abel",
     lastName: "Tesfaye",
     image:
       "https://www.radiofrance.fr/s3/cruiser-production/2021/05/e1e9f515-d792-41cd-8872-189e62905985/1200x680_gettyimages-1231050791_1.webp",
     phone: "123-456-7890",
     salary: 200000,
-    role: "Admin",
+    role: "ADMIN",
     username: "abel.tesfaye",
     password: "",
+    sex: "MALE",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
-  const [userState, setUserState] = React.useState<UserData>(user);
+  const [userState, setUserState] = React.useState<Account>(initialUser);
 
-  function setUser(updatedUser: UserData): void {
+  function setUser(updatedUser: Account): void {
     setUserState(updatedUser);
   }
 
@@ -62,13 +59,13 @@ const AccountPage: React.FC = () => {
               gap: 1,
             }}
           >
-            <Avatar src={user.image} sx={{ width: 80, height: 80 }} />
+            <Avatar src={account?.image} sx={{ width: 80, height: 80 }} />
             <Typography sx={{ fontSize: "20px" }}>
-              {user.firstName} {user.lastName}
+              {account?.firstName} {account?.lastName}
             </Typography>
             <Typography className="text-gray-400">
               <span className="font-bold text-gray-400">salary: </span>
-              {user.salary}
+              {account?.salary}
             </Typography>
             <Typography
               sx={{
@@ -78,7 +75,7 @@ const AccountPage: React.FC = () => {
               }}
               className="bg-blue-500"
             >
-              {user.role}
+              {account?.role}
             </Typography>
           </CardContent>
           <hr />

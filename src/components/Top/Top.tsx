@@ -3,7 +3,9 @@ import { Box, Avatar, IconButton } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { useSidebarStore } from "@/zustand/store.js";
 import { Close, Menu as MenuIcon } from "@mui/icons-material";
-import Profile from "./Profile.js";
+import Profile from "./Profile";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const Top: React.FC = () => {
   const getFormattedDate = (): string => {
@@ -20,13 +22,7 @@ const Top: React.FC = () => {
 
   const { isSidebarOpen, toggleSidebar } = useSidebarStore();
 
-  const user = {
-    image:
-      "https://www.radiofrance.fr/s3/cruiser-production/2021/05/e1e9f515-d792-41cd-8872-189e62905985/1200x680_gettyimages-1231050791_1.webp",
-
-    role: "Admin",
-    username: "John",
-  };
+  const { account } = useSelector((state: RootState) => state.account);
 
   const today = getFormattedDate();
 
@@ -69,12 +65,16 @@ const Top: React.FC = () => {
       <Avatar
         sx={{ bgcolor: deepPurple[500] }}
         onClick={() => setIsProfileOpen(!isProfileOpen)}
-        src={user.image}
+        src={account?.image}
       />
       <Profile
         open={isProfileOpen}
         onClose={() => setIsProfileOpen(false)}
-        user={{ image: user.image, role: user.role, username: user.username }}
+        user={{
+          image: account?.image || "",
+          role: account?.role || "",
+          username: account?.username || "",
+        }}
       />
     </Box>
   );

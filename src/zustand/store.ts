@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { Account } from "../Features/Account/accountSlice";
 
 interface SidebarState {
   isSidebarOpen: boolean;
@@ -21,21 +22,14 @@ interface AuthState {
   token: string | null;
   login: (username: string, password: string, role: string) => Promise<boolean>;
   logout: () => void;
-}
-
-interface AuthState {
-  isLoading: boolean;
-  error: string | null;
-  token: string | null;
-  login: (username: string, password: string, role: string) => Promise<boolean>;
-  logout: () => void;
+  user: Account | null;
   checkTokenExpiration: () => void;
 }
-
-const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   isLoading: false,
   error: null,
   token: localStorage.getItem("token") || null,
+  user: null,
 
   login: async (username, password, role) => {
     set({ isLoading: true, error: null });
@@ -58,12 +52,14 @@ const useAuthStore = create<AuthState>((set) => ({
       }
 
       const data = await response.json();
+
       const expiresAt = Date.now() + 60 * 60 * 1000; // 1 hour expiration
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("tokenExpiresAt", expiresAt.toString());
+      localStorage.setItem("id", data.user.id);
 
-      set({ token: data.token, isLoading: false });
+      set({ token: data.token, isLoading: false, user: data.user });
 
       return true;
     } catch (err) {
