@@ -41,7 +41,7 @@ const Top: React.FC = () => {
         justifyContent: "space-between",
         bgcolor: "white",
         borderBottom: "1px solid #f0f0f0",
-        // width: "full",
+        width: "full",
       }}
       // className="shadow-sm  "
     >

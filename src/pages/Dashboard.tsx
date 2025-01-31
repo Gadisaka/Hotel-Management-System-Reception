@@ -15,8 +15,9 @@ const Dashboard: React.FC = () => {
     }
   }, [token, navigate, checkTokenExpiration]);
   return (
-    <div className="flex flex-col gap-5 justify-around h-full w-full">
+    <div className="flex flex-col gap-5  items-center justify-around h-fit lg:py-0  py-8 w-full ">
       <Bar />
+
       <Overview />
     </div>
   );

@@ -34,7 +34,7 @@ const RecentBookings = ({ bookings }: RecentBooksProps) => {
     setBookingDetailsDialogOpen(true);
   };
   return (
-    <Box className="flex gap-5 justify-between h-full w-full">
+    <Box className="flex gap-5 justify-between overflow-x-scroll h-full w-full">
       {/* active customers card */}
       <Box className="w-full max-h-fit  bg-white">
         <TableContainer
@@ -94,13 +94,19 @@ const RecentBookings = ({ bookings }: RecentBooksProps) => {
                     onClick={() => handleRowClick(booking)}
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell>{booking.customerName}</TableCell>
-                    <TableCell>{booking.roomNumber}</TableCell>
-                    <TableCell>{booking.status}</TableCell>
-                    <TableCell>
+                    <TableCell className="cursor-pointer">
+                      {booking.customerName}
+                    </TableCell>
+                    <TableCell className="cursor-pointer">
+                      {booking.roomNumber}
+                    </TableCell>
+                    <TableCell className="cursor-pointer">
+                      {booking.status}
+                    </TableCell>
+                    <TableCell className="cursor-pointer">
                       {new Date(booking.startDate).toDateString()}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="cursor-pointer">
                       {new Date(booking.endDate).toDateString()}
                     </TableCell>
                   </TableRow>

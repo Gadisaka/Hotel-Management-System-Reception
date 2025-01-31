@@ -1,10 +1,14 @@
 import FilterAndSearch from "@/components/rooms/filterAndSearch";
 import { Box, Typography } from "@mui/material";
 import * as React from "react";
-import { rooms } from "@/components/rooms/roomData";
+// import { rooms } from "@/components/rooms/roomData";
 import RoomTable from "@/components/rooms/roomTable";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const Rooms: React.FC = () => {
+  const { rooms } = useSelector((state: RootState) => state.rooms);
+
   const [filteredData, setFilteredData] = React.useState(rooms);
 
   return (

@@ -2,15 +2,19 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { rooms } from "./roomData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { RoomData } from "./roomData";
 
 interface FilterAndSearchProps {
-  onFilterChange: (filteredData: typeof rooms) => void;
+  onFilterChange: (filteredData: RoomData[]) => void;
 }
 
 export default function FilterAndSearch({
   onFilterChange,
 }: FilterAndSearchProps) {
+  const { rooms } = useSelector((state: RootState) => state.rooms);
+
   const [searchText, setSearchText] = React.useState("");
   const [filterStatus, setFilterStatus] = React.useState("All");
   const [filterType, setFilterType] = React.useState("All");
@@ -32,7 +36,7 @@ export default function FilterAndSearch({
     }
 
     onFilterChange(results);
-  }, [filterStatus, filterType, onFilterChange]);
+  }, [filterStatus, filterType, rooms, onFilterChange]);
 
   React.useEffect(() => {
     if (searchText.trim() === "") {
@@ -40,12 +44,12 @@ export default function FilterAndSearch({
       setShowSearchBox(false);
     } else {
       const results = rooms.filter((room) =>
-        room.roomNumber.toString().includes(searchText)
+        room.number.toString().includes(searchText)
       );
       setSearchResults(results);
       setShowSearchBox(true);
     }
-  }, [searchText]);
+  }, [searchText, rooms]);
 
   return (
     <Box
@@ -172,11 +176,11 @@ export default function FilterAndSearch({
                       "&:hover": { backgroundColor: "#f0f0f0" },
                     }}
                     onClick={() => {
-                      setSearchText(result.roomNumber.toString());
+                      setSearchText(result.number.toString());
                       setShowSearchBox(false);
                     }}
                   >
-                    <strong>Number:</strong> {result.roomNumber}
+                    <strong>Number:</strong> {result.number}
                     <br />
                     <strong>Type:</strong> {result.type} <br />
                     <strong>Price:</strong> {result.price} <br />

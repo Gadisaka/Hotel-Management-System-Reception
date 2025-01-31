@@ -24,22 +24,9 @@ const AccountPage: React.FC = () => {
   const { account } = useSelector((state: RootState) => state.account);
   console.log(account?.sex);
 
-  const initialUser: Account = {
-    id: "1",
-    firstName: "Abel",
-    lastName: "Tesfaye",
-    image:
-      "https://www.radiofrance.fr/s3/cruiser-production/2021/05/e1e9f515-d792-41cd-8872-189e62905985/1200x680_gettyimages-1231050791_1.webp",
-    phone: "123-456-7890",
-    salary: 200000,
-    role: "ADMIN",
-    username: "abel.tesfaye",
-    password: "",
-    sex: "MALE",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  const [userState, setUserState] = React.useState<Account>(initialUser);
+  const [userState, setUserState] = React.useState<Account>(
+    account || ({} as Account)
+  );
 
   function setUser(updatedUser: Account): void {
     setUserState(updatedUser);
@@ -152,7 +139,7 @@ const AccountPage: React.FC = () => {
                   <TextField
                     label="New Password"
                     type={showPassword ? "text" : "password"}
-                    value={userState.password}
+                    // value={userState.password}
                     onChange={(e) =>
                       setUser({ ...userState, password: e.target.value })
                     }

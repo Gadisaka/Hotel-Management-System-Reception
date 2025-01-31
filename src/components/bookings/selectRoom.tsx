@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, Box, Button } from "@mui/material";
-import { rooms, RoomData } from "../rooms/roomData";
+import { RoomData } from "../rooms/roomData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 interface DialogProps {
   open: boolean;
@@ -15,8 +17,11 @@ const SelectRoomDialog: React.FC<DialogProps> = ({
   onSelectRoom,
 }) => {
   const [roomType, setRoomType] = useState<
-    "Single" | "Double" | "Triple" | "VIP"
-  >("Single");
+    "SINGLE" | "DOUBLE" | "TRIPLE" | "VIP"
+  >("SINGLE");
+
+  const { rooms } = useSelector((state: RootState) => state.rooms);
+
   const filteredRooms = rooms.filter((room) => room.type === roomType);
 
   return (
@@ -24,16 +29,47 @@ const SelectRoomDialog: React.FC<DialogProps> = ({
       <DialogTitle>Select Room</DialogTitle>
       <DialogContent>
         <Box mb={2} display="flex" gap={2}>
-          <Button variant="outlined" onClick={() => setRoomType("Single")}>
+          <Button
+            variant="outlined"
+            onClick={() => setRoomType("SINGLE")}
+            style={{
+              backgroundColor:
+                roomType === "SINGLE" ? "#3b82f6" : "transparent",
+              color: roomType === "SINGLE" ? "#fff" : "inherit",
+            }}
+          >
             Single
           </Button>
-          <Button variant="outlined" onClick={() => setRoomType("Double")}>
+          <Button
+            variant="outlined"
+            onClick={() => setRoomType("DOUBLE")}
+            style={{
+              backgroundColor:
+                roomType === "DOUBLE" ? "#3b82f6" : "transparent",
+              color: roomType === "DOUBLE" ? "#fff" : "inherit",
+            }}
+          >
             Double
           </Button>
-          <Button variant="outlined" onClick={() => setRoomType("Triple")}>
+          <Button
+            variant="outlined"
+            onClick={() => setRoomType("TRIPLE")}
+            style={{
+              backgroundColor:
+                roomType === "TRIPLE" ? "#3b82f6" : "transparent",
+              color: roomType === "TRIPLE" ? "#fff" : "inherit",
+            }}
+          >
             Triple
           </Button>
-          <Button variant="outlined" onClick={() => setRoomType("VIP")}>
+          <Button
+            variant="outlined"
+            onClick={() => setRoomType("VIP")}
+            style={{
+              backgroundColor: roomType === "VIP" ? "#3b82f6" : "transparent",
+              color: roomType === "VIP" ? "#fff" : "inherit",
+            }}
+          >
             VIP
           </Button>
         </Box>
@@ -42,17 +78,17 @@ const SelectRoomDialog: React.FC<DialogProps> = ({
             <Button
               key={room.id}
               variant="outlined"
-              disabled={room.status !== "Available"}
+              disabled={room.status !== "AVAILABLE"}
               onClick={() => {
-                onSelectRoom(`${roomType} Room ${room.roomNumber}`);
+                onSelectRoom(`${roomType} Room ${room.number}`);
                 onClose();
               }}
               style={{
                 backgroundColor:
-                  room.status !== "Available" ? "#f0f0f0" : "#e0ffe0",
+                  room.status !== "AVAILABLE" ? "#f0f0f0" : "#e0ffe0",
               }}
             >
-              {room.roomNumber}
+              {room.number}
             </Button>
           ))}
         </Box>

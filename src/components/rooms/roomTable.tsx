@@ -47,7 +47,7 @@ export default function RoomTable({ data }: RoomTableProps) {
             {data.map((room) => (
               <TableRow key={room.id}>
                 <TableCell>{room.id}</TableCell>
-                <TableCell>{room.roomNumber}</TableCell>
+                <TableCell>{room.number}</TableCell>
                 <TableCell>{room.type}</TableCell>
                 <TableCell>{room.price}</TableCell>
                 <TableCell>{room.status}</TableCell>

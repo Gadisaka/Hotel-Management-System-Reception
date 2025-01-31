@@ -1,5 +1,6 @@
 import { Avatar, Box, Button, Dialog, Typography } from "@mui/material";
 import * as React from "react";
+import { useAuthStore } from "../../zustand/store";
 
 interface DialogProps {
   open: boolean;
@@ -12,6 +13,10 @@ interface DialogProps {
 }
 
 const Profile: React.FC<DialogProps> = ({ open, onClose, user }) => {
+  const { logout } = useAuthStore();
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <Dialog
       open={open}
@@ -50,7 +55,13 @@ const Profile: React.FC<DialogProps> = ({ open, onClose, user }) => {
             </Button>
           </a>
 
-          <Button variant="contained" onClick={onClose}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleLogout();
+              onClose();
+            }}
+          >
             Logout
           </Button>
         </Box>

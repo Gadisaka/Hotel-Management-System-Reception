@@ -69,7 +69,7 @@ const Bar: React.FC = () => {
   }, [searchText]);
 
   return (
-    <Box className="bg-white w-full max-h-fit p-3  items-center gap-2 justify-between flex flex-col lg:flex-row px-4">
+    <Box className="bg-white w-[95%] lg:w-full max-h-fit p-3 items-center gap-2 justify-between flex flex-col lg:flex-row lg:px-4">
       <Box className=" flex flex-col gap-2 w-1/2">
         <Typography variant="h5" color="initial">
           {getGreeting(account?.firstName || "")}

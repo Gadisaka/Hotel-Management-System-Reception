@@ -1,21 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchRooms } from "./roomAPI";
-
-// Define the Room type
-interface Room {
-  id: string;
-  roomNumber: number;
-  floor: number;
-  type: "SINGLE" | "DOUBLE" | "TRIPLE" | "VIP";
-  price: number;
-  status: "AVAILABLE" | "OCCUPIED" | "MAINTENANCE";
-  createdAt: string;
-  updatedAt: string;
-}
+import { RoomData } from "../../components/rooms/roomData";
 
 // Define the state
 interface RoomsState {
-  rooms: Room[];
+  rooms: RoomData[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }

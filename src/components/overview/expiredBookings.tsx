@@ -84,7 +84,7 @@ const ExpiredBookings = ({ data }: BookingTableProps) => {
             </Box>
           )}
           {status === "succeeded" && (
-            <TableBody>
+            <TableBody className="w-[90%] overflow-x-scroll ">
               {data.filter(
                 (booking: BookingData) =>
                   new Date(booking.endDate) < new Date() &&

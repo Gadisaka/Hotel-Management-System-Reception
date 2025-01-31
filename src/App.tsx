@@ -26,7 +26,7 @@ const App: React.FC = () => {
   return (
     <Router>
       {token ? (
-        <div className="flex justify-between">
+        <div className="flex justify-between ">
           <div className="top-0 left-0 h-screen sticky z-50">
             <Sidebar />
             <Menu />
@@ -35,7 +35,7 @@ const App: React.FC = () => {
             <div className="sticky top-0 z-50">
               <Top />
             </div>
-            <main className="p-8 z-10">
+            <main className="p-3 lg:p-8 w-full z-10">
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/rooms" element={<Rooms />} />
