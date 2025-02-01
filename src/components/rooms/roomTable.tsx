@@ -44,7 +44,7 @@ export default function RoomTable({ data }: RoomTableProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data
+            {[...data]
               .sort((a, b) => a.number - b.number)
               .map((room) => (
                 <TableRow key={room.id}>
