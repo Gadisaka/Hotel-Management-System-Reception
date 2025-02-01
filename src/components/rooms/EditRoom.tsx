@@ -4,6 +4,12 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { RoomData } from "./roomData";
 import { MenuItem } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/store";
+import {
+  changeRoomStatusThunk,
+  fetchRoomsThunk,
+} from "@/Features/Rooms/roomSlice";
 
 interface EditRoomProps {
   room: RoomData;
@@ -12,18 +18,29 @@ interface EditRoomProps {
 
 export default function EditRoom({ room, onCancel }: EditRoomProps) {
   const [editedRoom, setEditedRoom] = useState<RoomData>(room);
+  const [newStatus, setNewStatus] = useState(editedRoom.status);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setEditedRoom((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const dispatch = useDispatch<AppDispatch>();
+
+  // ✅ Fix: Update newStatus directly when the select value changes
+  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewStatus(e.target.value as RoomData["status"]);
   };
 
   const handleSave = () => {
-    // Handle save logic here (e.g., API call or updating state)
-    console.log("Updated Room Data:", editedRoom);
+    try {
+      dispatch(changeRoomStatusThunk({ id: editedRoom.id, status: newStatus }));
+      console.log("Updated Room Data:", {
+        id: editedRoom.id,
+        status: newStatus,
+      });
+      dispatch(fetchRoomsThunk());
+
+      setEditedRoom({ ...editedRoom, status: newStatus });
+    } catch (err) {
+      console.log("Error updating room status:", err);
+    }
+
     onCancel(); // Close the dialog
   };
 
@@ -33,23 +50,20 @@ export default function EditRoom({ room, onCancel }: EditRoomProps) {
         select
         label="Status"
         name="status"
-        value={editedRoom.status}
-        onChange={handleChange}
+        value={newStatus}
+        onChange={handleStatusChange} // ✅ Fixed: Correct function
         fullWidth
       >
-        {["Available", "Unavailable", "Maintenance"].map((status) => (
-          <MenuItem key={status} value={status}>
-            {status}
-          </MenuItem>
-        ))}
+        {["AVAILABLE", "UNAVAILABLE", "MAINTENANCE", "CLEANING"].map(
+          (status) => (
+            <MenuItem key={status} value={status}>
+              {status}
+            </MenuItem>
+          )
+        )}
       </TextField>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          // bgcolor: "green",
-        }}
-      >
+
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
           <Button variant="contained" color="primary" onClick={handleSave}>
             Save

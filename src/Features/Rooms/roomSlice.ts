@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchRooms } from "./roomAPI";
+import { changeStatus, fetchRooms } from "./roomAPI";
 import { RoomData } from "../../components/rooms/roomData";
 
 // Define the state
@@ -20,6 +20,14 @@ export const fetchRoomsThunk = createAsyncThunk(
   "rooms/fetchRooms",
   async () => {
     const response = await fetchRooms();
+    return response;
+  }
+);
+
+export const changeRoomStatusThunk = createAsyncThunk(
+  "rooms/changeStatus",
+  async ({ id, status }: { id: string; status: string }) => {
+    const response = await changeStatus(id, status);
     return response;
   }
 );
