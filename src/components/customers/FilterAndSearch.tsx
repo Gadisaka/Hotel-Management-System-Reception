@@ -75,7 +75,7 @@ export default function FilterAndSearch({
           p: 1,
         }}
       >
-        {["All", "Active", "Inactive", "Suspended"].map((status) => (
+        {["All", "ACTIVE", "INACTIVE", "SUSPENDED"].map((status) => (
           <Button
             key={status}
             variant={filterStatus === status ? "contained" : "outlined"}

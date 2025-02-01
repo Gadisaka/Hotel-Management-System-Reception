@@ -78,11 +78,11 @@ export default function FilterAndSearch({
         <Box sx={{ display: "flex", gap: 1 }}>
           {[
             "All",
-            "Available",
-            "Occupied",
-            "Maintenance",
-            "Cleaning",
-            "Unavailable",
+            "AVAILABLE",
+            "OCCUPIED",
+            "MAINTENANCE",
+            "CLEANING",
+            "UNAVAILABLE",
           ].map((status) => (
             <Button
               key={status}
@@ -96,7 +96,7 @@ export default function FilterAndSearch({
         </Box>
 
         <Box sx={{ display: "flex", gap: 1 }}>
-          {["All", "Single", "Double", "Triple", "VIP"].map((type) => (
+          {["All", "SINGLE", "DOUBLE", "TRIPLE", "VIP"].map((type) => (
             <Button
               key={type}
               variant={filterType === type ? "contained" : "outlined"}
