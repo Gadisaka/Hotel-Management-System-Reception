@@ -88,13 +88,13 @@ const ExpiredBookings = ({ data }: BookingTableProps) => {
               {data.filter(
                 (booking: BookingData) =>
                   new Date(booking.endDate) < new Date() &&
-                  booking.status === "CONFIRMED"
+                  booking.customerStatus === "ACTIVE"
               ).length > 0 ? (
                 data
                   .filter(
                     (booking: BookingData) =>
                       new Date(booking.endDate) < new Date() &&
-                      booking.status === "CONFIRMED"
+                      booking.customerStatus === "ACTIVE"
                   )
                   .map((booking: BookingData) => (
                     <TableRow

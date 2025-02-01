@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
 import { fetchBookingsThunk } from "@/Features/Bookings/bookingSlice";
 import { fetchRoomsThunk } from "@/Features/Rooms/roomSlice";
+import { fetchCustomersThunk } from "@/Features/Customers/customerSlice";
 
 const Overview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +21,11 @@ const Overview: React.FC = () => {
   React.useEffect(() => {
     dispatch(fetchRoomsThunk());
   }, [dispatch]);
+
+  React.useEffect(() => {
+    dispatch(fetchCustomersThunk());
+  }, [dispatch]);
+
 
   return (
     <Box className="flex w-[95%] lg:w-full flex-col h-full pb-3 lg:flex-row gap-3 justify-between ">

@@ -1,24 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchBookings } from "./bookingAPI";
+import { createBooking, fetchBookings } from "./bookingAPI";
+import { BookingData } from "@/components/bookings/bookingsData";
 
-// Define the Booking type
-interface Booking {
-  id: string;
-  customerId: string;
-  roomId: string;
-  startDate: string;
-  endDate: string;
-  payment: number;
-  status: "COMPLETED" | "PENDING" | "CANCELLED" | "CONFIRMED";
-  createdAt: string;
-  updatedAt: string;
-  roomNumber: number;
-  customerName: string;
-}
-
-// Define the state
 interface BookingsState {
-  bookings: Booking[];
+  bookings: BookingData[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -29,7 +14,6 @@ const initialState: BookingsState = {
   error: null,
 };
 
-// Create the async thunk
 export const fetchBookingsThunk = createAsyncThunk(
   "bookings/fetchBookings",
   async () => {
@@ -39,7 +23,14 @@ export const fetchBookingsThunk = createAsyncThunk(
   }
 );
 
-// Create the slice
+export const createBookingThunk = createAsyncThunk(
+  "bookings/createBooking",
+  async (newBooking: BookingData) => {
+    const response = await createBooking(newBooking);
+    return response;
+  }
+);
+
 const bookingsSlice = createSlice({
   name: "bookings",
   initialState,

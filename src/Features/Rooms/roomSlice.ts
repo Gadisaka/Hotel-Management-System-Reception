@@ -20,7 +20,6 @@ export const fetchRoomsThunk = createAsyncThunk(
   "rooms/fetchRooms",
   async () => {
     const response = await fetchRooms();
-    console.log(response);
     return response;
   }
 );

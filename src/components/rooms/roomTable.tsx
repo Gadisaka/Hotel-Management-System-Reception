@@ -7,12 +7,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import { RoomData } from "./roomData";
 import EditRoom from "./EditRoom";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface RoomTableProps {
   data: RoomData[];
@@ -35,34 +35,50 @@ export default function RoomTable({ data }: RoomTableProps) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>Number</TableCell>
               <TableCell>Type</TableCell>
+              <TableCell>Floor</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((room) => (
-              <TableRow key={room.id}>
-                <TableCell>{room.id}</TableCell>
-                <TableCell>{room.number}</TableCell>
-                <TableCell>{room.type}</TableCell>
-                <TableCell>{room.price}</TableCell>
-                <TableCell>{room.status}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleEditClick(room)}
-                    sx={{ bgcolor: "red" }}
-                  >
-                    Edit
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {data
+              .sort((a, b) => a.number - b.number)
+              .map((room) => (
+                <TableRow key={room.id}>
+                  <TableCell>{room.number}</TableCell>
+                  <TableCell>{room.type}</TableCell>
+                  <TableCell>{room.floor}</TableCell>
+                  <TableCell>{room.price}</TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        backgroundColor:
+                          room.status === "AVAILABLE"
+                            ? "green"
+                            : room.status === "OCCUPIED"
+                            ? "red"
+                            : "gray",
+                        color: "white",
+                        padding: "4px 8px",
+                        borderRadius: "4px",
+                        textAlign: "center",
+                        width: "fit-content",
+                      }}
+                    >
+                      {room.status}
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <EditIcon
+                      sx={{ ml: 1, cursor: "pointer", color: "blue-500" }}
+                      onClick={() => handleEditClick(room)}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

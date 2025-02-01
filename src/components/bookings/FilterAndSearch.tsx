@@ -40,7 +40,9 @@ export default function FilterAndSearch({
       setShowSearchBox(false);
     } else {
       const results = bookings.filter((booking) =>
-        booking.customerName.toLowerCase().includes(searchText.toLowerCase())
+        (booking.customerName ?? "")
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
       );
       setSearchResults(results);
       setShowSearchBox(true);
@@ -154,7 +156,7 @@ export default function FilterAndSearch({
                     "&:hover": { backgroundColor: "#f0f0f0" },
                   }}
                   onClick={() => {
-                    setSearchText(result.customerName);
+                    setSearchText(result.customerName || "");
                     setShowSearchBox(false);
                   }}
                 >

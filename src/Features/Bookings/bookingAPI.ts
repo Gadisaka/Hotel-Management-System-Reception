@@ -1,16 +1,26 @@
 import axios from "axios";
+import { BookingData } from "@/components/bookings/bookingsData";
 
 const API_URL =
-  "https://hotel-management-system-backend-yref.onrender.com/booking/all";
+  "https://hotel-management-system-backend-yref.onrender.com/booking";
 
-// Fetch all bookings
 export const fetchBookings = async () => {
-  //   const token = store.getState().auth.token; // Get token from Redux store
+  //   const token = store.getState().auth.token;
   const token = localStorage.getItem("token");
-  const response = await axios.get(API_URL, {
+  const response = await axios.get(`${API_URL}/all`, {
     headers: {
-      Authorization: `Bearer ${token}`, // Include token in the header
+      Authorization: `Bearer ${token}`,
     },
   });
   return response.data.bookings;
+};
+
+export const createBooking = async (newBooking: BookingData) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.post(`${API_URL}/new`, newBooking, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
 };

@@ -47,10 +47,16 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
             <strong>Room Number:</strong> {booking?.roomNumber}
           </p>
           <p>
-            <strong>Check-in Date:</strong> {booking?.startDate}
+            <strong>Check-in Date:</strong>{" "}
+            {booking?.startDate
+              ? new Date(booking.startDate).toDateString()
+              : "N/A"}
           </p>
           <p>
-            <strong>Check-out Date:</strong> {booking?.endDate}
+            <strong>Check-out Date:</strong>{" "}
+            {booking?.endDate
+              ? new Date(booking.endDate).toDateString()
+              : "N/A"}
           </p>
           <p>
             <strong>Payment:</strong> {booking?.payment}
@@ -69,7 +75,7 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
             <Button
               onClick={() =>
                 booking &&
-                changeBookingStatus(parseInt(booking.id), "Confirmed")
+                changeBookingStatus(parseInt(booking?.id ?? "0"), "Confirmed")
               }
               variant="contained"
               color="primary"
@@ -81,7 +87,7 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
               <Button
                 onClick={() =>
                   booking &&
-                  changeBookingStatus(parseInt(booking.id), "COMPLETED")
+                  changeBookingStatus(parseInt(booking?.id ?? "0"), "COMPLETED")
                 }
                 variant="contained"
                 color="success"
@@ -91,7 +97,7 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
               <Button
                 onClick={() =>
                   booking &&
-                  changeBookingStatus(parseInt(booking.id), "CANCELLED")
+                  changeBookingStatus(parseInt(booking?.id ?? "0"), "CANCELLED")
                 }
                 variant="contained"
                 color="error"

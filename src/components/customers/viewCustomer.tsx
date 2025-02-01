@@ -45,8 +45,8 @@ const ViewCustomer: React.FC<DialogProps> = ({ open, onClose, customer }) => {
               <ul>
                 {customer.bookingHistory.map((booking, index) => (
                   <li key={index}>
-                    {booking.startDate} - Room {booking.roomNumber} -{" "}
-                    {booking.status}
+                    {new Date(booking.startDate).toDateString()} - Room{" "}
+                    {booking.roomNumber} - {booking.status}
                   </li>
                 ))}
               </ul>

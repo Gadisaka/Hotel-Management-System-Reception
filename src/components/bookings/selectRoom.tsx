@@ -7,7 +7,7 @@ import { RootState } from "@/app/store";
 interface DialogProps {
   open: boolean;
   onClose: () => void;
-  onSelectRoom: (room: string) => void;
+  onSelectRoom: (room: string, roomId: string, price: number) => void;
   rooms: RoomData[];
 }
 
@@ -80,7 +80,11 @@ const SelectRoomDialog: React.FC<DialogProps> = ({
               variant="outlined"
               disabled={room.status !== "AVAILABLE"}
               onClick={() => {
-                onSelectRoom(`${roomType} Room ${room.number}`);
+                onSelectRoom(
+                  `${roomType} Room ${room.number}`,
+                  room.id,
+                  room.price
+                );
                 onClose();
               }}
               style={{

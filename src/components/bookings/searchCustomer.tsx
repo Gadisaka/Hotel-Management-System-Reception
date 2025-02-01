@@ -6,7 +6,9 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
-import { customers } from "../customers/customersData";
+import {} from "../customers/customersData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 interface DialogProps {
   open: boolean;
@@ -18,6 +20,7 @@ const SearchCustomer: React.FC<DialogProps> = ({
   onClose,
   onSelectedCustomer,
 }) => {
+  const { customers } = useSelector((state: RootState) => state.customers);
   const [showSearchBox, setShowSearchBox] = React.useState(false);
   const [searchText, setSearchText] = React.useState("");
   const [searchResults, setSearchResults] = React.useState<typeof customers>(
@@ -36,7 +39,7 @@ const SearchCustomer: React.FC<DialogProps> = ({
       setSearchResults(results);
       setShowSearchBox(true);
     }
-  }, [searchText]);
+  }, [searchText, customers]);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -104,7 +107,10 @@ const SearchCustomer: React.FC<DialogProps> = ({
                     onClick={() => {
                       setSearchText(result.firstName);
                       const fullName = result.firstName + result.lastName;
-                      onSelectedCustomer(fullName, result.id);
+                      const id = result.id || "";
+                      onSelectedCustomer(fullName, id);
+                      console.log("test", result.id);
+
                       setShowSearchBox(false);
                       onClose();
                     }}

@@ -2,9 +2,12 @@ import CustomersTable from "@/components/customers/customerTable";
 import FilterAndSearch from "@/components/customers/FilterAndSearch";
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import { customers } from "@/components/customers/customersData";
+import {} from "@/components/customers/customersData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const Customers: React.FC = () => {
+  const { customers } = useSelector((state: RootState) => state.customers);
   const [filteredData, setFilteredData] = React.useState(customers);
 
   return (

@@ -87,30 +87,37 @@ const RecentBookings = ({ bookings }: RecentBooksProps) => {
             )}
             {status === "succeeded" && bookings.length > 0 && (
               <TableBody>
-                {bookings.slice(0, 6).map((booking: BookingData) => (
-                  <TableRow
-                    key={booking.id}
-                    hover
-                    onClick={() => handleRowClick(booking)}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    <TableCell className="cursor-pointer">
-                      {booking.customerName}
-                    </TableCell>
-                    <TableCell className="cursor-pointer">
-                      {booking.roomNumber}
-                    </TableCell>
-                    <TableCell className="cursor-pointer">
-                      {booking.status}
-                    </TableCell>
-                    <TableCell className="cursor-pointer">
-                      {new Date(booking.startDate).toDateString()}
-                    </TableCell>
-                    <TableCell className="cursor-pointer">
-                      {new Date(booking.endDate).toDateString()}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {bookings
+                  .slice(0, 6)
+                  .sort(
+                    (a, b) =>
+                      new Date(b.startDate).getTime() -
+                      new Date(a.startDate).getTime()
+                  )
+                  .map((booking: BookingData) => (
+                    <TableRow
+                      key={booking.id}
+                      hover
+                      onClick={() => handleRowClick(booking)}
+                      sx={{ cursor: "pointer" }}
+                    >
+                      <TableCell className="cursor-pointer">
+                        {booking.customerName}
+                      </TableCell>
+                      <TableCell className="cursor-pointer">
+                        {booking.roomNumber}
+                      </TableCell>
+                      <TableCell className="cursor-pointer">
+                        {booking.status}
+                      </TableCell>
+                      <TableCell className="cursor-pointer">
+                        {new Date(booking.startDate).toDateString()}
+                      </TableCell>
+                      <TableCell className="cursor-pointer">
+                        {new Date(booking.endDate).toDateString()}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             )}
           </Table>

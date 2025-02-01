@@ -5,11 +5,13 @@ import storage from "redux-persist/lib/storage"; // Uses localStorage
 import bookingsReducer from "../Features/Bookings/bookingSlice";
 import roomsReducer from "../Features/Rooms/roomSlice";
 import accountReducer from "../Features/Account/accountSlice";
+import customersReducer from "../Features/Customers/customerSlice";
 
 const rootReducer = combineReducers({
   rooms: roomsReducer,
   bookings: bookingsReducer,
   account: accountReducer,
+  customers: customersReducer,
 });
 
 const persistConfig = {

@@ -77,21 +77,28 @@ export default function BookingTable({ data }: BookingTableProps) {
 
           {status === "succeeded" && (
             <TableBody>
-              {data.map((booking) => (
-                <TableRow
-                  key={booking.id}
-                  hover
-                  onClick={() => handleRowClick(booking)}
-                  sx={{ cursor: "pointer" }}
-                >
-                  <TableCell>{booking.customerName}</TableCell>
-                  <TableCell>{booking.roomNumber}</TableCell>
-                  <TableCell>{booking.startDate}</TableCell>
-                  <TableCell>{booking.endDate}</TableCell>
-                  <TableCell>{booking.payment}</TableCell>
-                  <TableCell>{booking.status}</TableCell>
-                </TableRow>
-              ))}
+              {data
+                .slice()
+                .sort(
+                  (a, b) =>
+                    new Date(b.startDate).getTime() -
+                    new Date(a.startDate).getTime()
+                )
+                .map((booking) => (
+                  <TableRow
+                    key={booking.id}
+                    hover
+                    onClick={() => handleRowClick(booking)}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    <TableCell>{booking.customerName}</TableCell>
+                    <TableCell>{booking.roomNumber}</TableCell>
+                    <TableCell>{booking.startDate}</TableCell>
+                    <TableCell>{booking.endDate}</TableCell>
+                    <TableCell>{booking.payment}</TableCell>
+                    <TableCell>{booking.status}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           )}
         </Table>

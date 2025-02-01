@@ -3,12 +3,13 @@ import * as React from "react";
 import CreateBookingDialog from "../bookings/createBooking";
 import SelectRoomDialog from "../bookings/selectRoom";
 import CreateCustomerDialog from "../customers/createCustomer";
-import { customers, customersData } from "../customers/customersData";
+import { customersData } from "../customers/customersData";
 import ViewCustomer from "../customers/viewCustomer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/app/store";
 import { fetchAccountDetailsThunk } from "@/Features/Account/accountSlice";
 import { AppDispatch } from "@/app/store";
+import { RoomData } from "../rooms/roomData";
 
 // afternoon if time  is past 12:00 pm and good morning if time is lessthan 12:00pm and soon
 const getGreeting: (user: string) => string = (user) => {
@@ -33,6 +34,8 @@ const Bar: React.FC = () => {
     React.useState<customersData | null>(null);
   const dispatch: AppDispatch = useDispatch();
 
+  const { customers } = useSelector((state: RootState) => state.customers);
+
   const { account } = useSelector((state: RootState) => state.account);
   const id = localStorage.getItem("id");
 
@@ -49,9 +52,7 @@ const Bar: React.FC = () => {
   };
 
   const [searchText, setSearchText] = React.useState("");
-  const [searchResults, setSearchResults] = React.useState<typeof customers>(
-    []
-  );
+  const [searchResults, setSearchResults] = React.useState<customersData[]>([]);
   const [showSearchBox, setShowSearchBox] = React.useState(false);
 
   // Handle search results
@@ -60,13 +61,13 @@ const Bar: React.FC = () => {
       setSearchResults([]);
       setShowSearchBox(false);
     } else {
-      const results = customers.filter((customer) =>
+      const results = customers.filter((customer: customersData) =>
         customer.firstName.toLowerCase().includes(searchText.toLowerCase())
       );
       setSearchResults(results);
       setShowSearchBox(true);
     }
-  }, [searchText]);
+  }, [searchText, customers]);
 
   return (
     <Box className="bg-white w-[95%] lg:w-full max-h-fit p-3 items-center gap-2 justify-between flex flex-col lg:flex-row lg:px-4">
@@ -95,7 +96,7 @@ const Bar: React.FC = () => {
             open={selectRoomDialogOpen}
             onClose={() => setSelectRoomDialogOpen(false)}
             onSelectRoom={() => {}}
-            rooms={[]}
+            rooms={[] as RoomData[]}
           />
 
           <Button

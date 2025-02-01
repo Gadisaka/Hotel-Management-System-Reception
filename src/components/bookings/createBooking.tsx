@@ -7,10 +7,14 @@ import {
   Button,
   Typography,
   TextField,
+  CircularProgress,
 } from "@mui/material";
 import CreateCustomerDialog from "../customers/createCustomer";
 import SelectRoomDialog from "./selectRoom";
 import SearchCustomer from "./searchCustomer";
+import { useDispatch } from "react-redux";
+import { createBookingThunk } from "../../Features/Bookings/bookingSlice";
+import { AppDispatch } from "@/app/store";
 
 interface CreateBookingDialogProps {
   open: boolean;
@@ -25,19 +29,55 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
   const [customerDialogOpen, setCustomerDialogOpen] = useState(false);
   const [selectRoomDialogOpen, setSelectRoomDialogOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<string | null>(null);
+  const [selectedCustomerID, setSelectedCustomerID] = useState<string | null>(
+    null
+  );
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [searchCustomerDialogOpen, setSearchCustomerDialogOpen] =
     useState(false);
+  const [selectedRoomID, setSelectedRoomID] = useState<string | null>(null);
+  const [selectedRoomPrice, setSelectedRoomPrice] = useState<number | null>(
+    null
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCreateBooking = async () => {
+    if (selectedCustomer && selectedRoom && startDate && endDate) {
+      setIsLoading(true);
+      try {
+        await dispatch(
+          createBookingThunk({
+            customer: selectedCustomerID!,
+            room: selectedRoomID!,
+            startDate: new Date(startDate!).toISOString(),
+            endDate: new Date(endDate!).toISOString(),
+          })
+        );
+      } catch (error) {
+        console.error("Failed to create booking:", error);
+        alert("Failed to create booking. Please try again.");
+      } finally {
+        onClose();
+        setIsLoading(false);
+      }
+    } else {
+      alert("Please fill in all fields.");
+    }
+  };
 
   const handleCustomerCreated = (fullName: string) => {
     setSelectedCustomer(fullName);
     setCustomerDialogOpen(false);
   };
 
-  const handleSelectRoom = (room: string) => {
+  const handleSelectRoom = (room: string, roomId: string, price: number) => {
     setSelectedRoom(room);
+    setSelectedRoomID(roomId);
+    setSelectedRoomPrice(price);
     setSelectRoomDialogOpen(false);
   };
 
@@ -79,7 +119,9 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
               onClick={() => setSelectRoomDialogOpen(true)}
               sx={{ mt: 1 }}
             >
-              {selectedRoom ? `Room: ${selectedRoom}` : "Select Room"}
+              {selectedRoom
+                ? `${selectedRoom} , Price: ${selectedRoomPrice}`
+                : "Select Room"}
             </Button>
           </Box>
 
@@ -112,24 +154,32 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
               variant="outlined"
               onClick={() => onClose()}
               color="secondary"
+              disabled={isLoading}
             >
               Cancel
             </Button>
             <Button
               variant="contained"
               color="primary"
-              sx={{ ml: 2 }}
+              sx={{ ml: 2, display: "flex", justifyContent: "center" }}
               onClick={() => {
                 console.log({
-                  selectedCustomer,
-                  selectedRoom,
-                  startDate,
-                  endDate,
+                  cID: selectedCustomerID,
+                  rID: selectedRoomID,
+                  sd: startDate,
+                  ed: new Date(endDate!).toISOString(),
+                  pr: selectedRoomPrice,
                 });
-                onClose();
+
+                handleCreateBooking();
               }}
+              disabled={isLoading}
             >
-              Create Booking
+              {isLoading ? (
+                <CircularProgress size={24} style={{ marginLeft: 8 }} />
+              ) : (
+                "Create Booking"
+              )}
             </Button>
           </Box>
         </DialogContent>
@@ -156,6 +206,7 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
         onClose={() => setSearchCustomerDialogOpen(false)}
         onSelectedCustomer={(fullName: string, id: string) => {
           setSelectedCustomer(fullName);
+          setSelectedCustomerID(id);
           console.log(id);
         }}
       />

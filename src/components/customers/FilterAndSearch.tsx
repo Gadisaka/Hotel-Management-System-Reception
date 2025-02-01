@@ -2,22 +2,23 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { customers } from "./customersData";
+import { customersData } from "./customersData";
 import ViewCustomer from "./viewCustomer";
 import CreateCustomerDialog from "./createCustomer";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 interface FilterAndSearchProps {
-  onFilterChange: (filteredData: typeof customers) => void;
+  onFilterChange: (filteredData: customersData[]) => void;
 }
 
 export default function FilterAndSearch({
   onFilterChange,
 }: FilterAndSearchProps) {
+  const { customers } = useSelector((state: RootState) => state.customers);
   const [searchText, setSearchText] = React.useState("");
   const [filterStatus, setFilterStatus] = React.useState("All");
-  const [searchResults, setSearchResults] = React.useState<typeof customers>(
-    []
-  );
+  const [searchResults, setSearchResults] = React.useState<customersData[]>([]);
   const [showSearchBox, setShowSearchBox] = React.useState(false);
   const [customerDialogOpen, setCustomerDialogOpen] = React.useState(false);
   const [createCustomerDialogOpen, setCreateCustomerDialogOpen] =
@@ -38,7 +39,7 @@ export default function FilterAndSearch({
     }
 
     onFilterChange(results);
-  }, [filterStatus, onFilterChange]);
+  }, [filterStatus, onFilterChange, customers]);
 
   // Handle search results
   React.useEffect(() => {
@@ -52,7 +53,7 @@ export default function FilterAndSearch({
       setSearchResults(results);
       setShowSearchBox(true);
     }
-  }, [searchText]);
+  }, [searchText, customers]);
 
   return (
     <Box

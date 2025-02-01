@@ -20,7 +20,11 @@ const TotalIncome: React.FC<TotalIncomeProps> = ({
         bookingDate.getFullYear() === today.getFullYear()
       );
     })
-    .reduce((sum, booking) => sum + parseFloat(booking.payment.toString()), 0);
+    .reduce(
+      (sum, booking) =>
+        sum + (booking.payment ? parseFloat(booking.payment.toString()) : 0),
+      0
+    );
   return (
     <Box className="w-full p-3 gap-3 flex flex-col bg-white max-h-fit">
       <Box className="flex items-center gap-2">
