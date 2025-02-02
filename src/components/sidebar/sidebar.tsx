@@ -53,7 +53,7 @@ export default function Sidebar() {
         >
           <Domain sx={{ color: "primary.light", fontSize: 40 }} />
           <Typography variant="h3" color="primary.light">
-            Dotel
+            Hotelify
           </Typography>
         </Box>
 

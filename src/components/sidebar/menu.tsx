@@ -57,7 +57,7 @@ export default function Menu() {
           >
             <Domain sx={{ color: "primary.light", fontSize: 40 }} />
             <Typography variant="h3" color="primary.light">
-              _Dotel
+              Hotelify
             </Typography>
           </Box>
 
