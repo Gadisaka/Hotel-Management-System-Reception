@@ -7,6 +7,13 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { BookingData } from "./bookingsData";
+import {
+  changeBookingStatusThunk,
+  fetchBookingsThunk,
+} from "@/Features/Bookings/bookingSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/store";
+import React from "react";
 
 type ViewBookingProps = {
   open: boolean;
@@ -19,20 +26,18 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
   onClose,
   booking,
 }) => {
-  const changeBookingStatus = (id: number, newStatus: string): void => {
-    // Here you would typically make an API call to update the booking status on the server
-    // For example:
-    // axios.put(`/api/bookings/${id}/status`, { status: newStatus })
-    //   .then(response => {
-    //     // Handle success
-    //   })
-    //   .catch(error => {
-    //     // Handle error
-    //   });
-
-    console.log(`Booking ID: ${id}, New Status: ${newStatus}`);
+  const dispatch: AppDispatch = useDispatch();
+  const changeBookingStatus = (status: string) => {
+    try {
+      if (booking?.id && status) {
+        dispatch(changeBookingStatusThunk({ id: booking.id, status: status }));
+        dispatch(fetchBookingsThunk());
+        console.log(`Booking ID: ${booking?.id} status changed to ${status}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
     onClose();
-    // Update the booking status locally if needed
   };
 
   return (
@@ -73,10 +78,12 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
           </Button>
           {booking?.status === "PENDING" ? (
             <Button
-              onClick={() =>
-                booking &&
-                changeBookingStatus(parseInt(booking?.id ?? "0"), "Confirmed")
-              }
+              onClick={() => {
+                if (booking) {
+                  changeBookingStatus("CONFIRMED");
+                  // setNewStatus("CONFIRMED");
+                }
+              }}
               variant="contained"
               color="primary"
             >
@@ -85,20 +92,22 @@ const ViewBooking: React.FC<ViewBookingProps> = ({
           ) : booking?.status === "CONFIRMED" ? (
             <Box className="flex gap-2">
               <Button
-                onClick={() =>
-                  booking &&
-                  changeBookingStatus(parseInt(booking?.id ?? "0"), "COMPLETED")
-                }
+                onClick={() => {
+                  if (booking) {
+                    changeBookingStatus("COMPLETED");
+                  }
+                }}
                 variant="contained"
                 color="success"
               >
                 Check-Out
               </Button>
               <Button
-                onClick={() =>
-                  booking &&
-                  changeBookingStatus(parseInt(booking?.id ?? "0"), "CANCELLED")
-                }
+                onClick={() => {
+                  if (booking) {
+                    changeBookingStatus("CANCELLED");
+                  }
+                }}
                 variant="contained"
                 color="error"
               >

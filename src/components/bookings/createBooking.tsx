@@ -49,14 +49,18 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
     if (selectedCustomer && selectedRoom && startDate && endDate) {
       setIsLoading(true);
       try {
-        await dispatch(
-          createBookingThunk({
-            customer: selectedCustomerID!,
-            room: selectedRoomID!,
-            startDate: new Date(startDate!).toISOString(),
-            endDate: new Date(endDate!).toISOString(),
-          })
-        );
+        if (selectedCustomerID && selectedRoomID) {
+          await dispatch(
+            createBookingThunk({
+              customer: selectedCustomerID,
+              room: selectedRoomID,
+              startDate: new Date(startDate!).toISOString(),
+              endDate: new Date(endDate!).toISOString(),
+            })
+          );
+        } else {
+          alert("Please select a customer and a room");
+        }
       } catch (error) {
         console.error("Failed to create booking:", error);
         alert("Failed to create booking. Please try again.");
@@ -69,8 +73,9 @@ const CreateBookingDialog: React.FC<CreateBookingDialogProps> = ({
     }
   };
 
-  const handleCustomerCreated = (fullName: string) => {
+  const handleCustomerCreated = (fullName: string, id: string) => {
     setSelectedCustomer(fullName);
+    setSelectedCustomerID(id);
     setCustomerDialogOpen(false);
   };
 

@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createBooking, fetchBookings } from "./bookingAPI";
+import {
+  changeBookingStatus,
+  createBooking,
+  fetchBookings,
+} from "./bookingAPI";
 import { BookingData } from "@/components/bookings/bookingsData";
 
 interface BookingsState {
@@ -31,10 +35,20 @@ export const createBookingThunk = createAsyncThunk(
   }
 );
 
+export const changeBookingStatusThunk = createAsyncThunk(
+  "bookings/changeStatus",
+  async ({ id, status }: { id: string; status: string }) => {
+    const response = await changeBookingStatus(id, status);
+    return response;
+  }
+);
+
 const bookingsSlice = createSlice({
   name: "bookings",
   initialState,
-  reducers: {},
+  reducers: {
+    // Add reducers here
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBookingsThunk.pending, (state) => {

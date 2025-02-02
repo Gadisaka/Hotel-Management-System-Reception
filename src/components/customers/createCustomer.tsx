@@ -51,12 +51,13 @@ const CreateCustomerDialog: React.FC<CreateCustomerDialogProps> = ({
           })
         );
 
-        dispatch(fetchCustomersThunk());
         if (createCustomerThunk.fulfilled.match(resultAction)) {
           const { id } = resultAction.payload.customer;
           const fullName = `${firstName} ${lastName}`;
 
           onCustomerCreated(fullName, id);
+          console.log("Customer created:", fullName, id);
+          dispatch(fetchCustomersThunk());
           onClose();
         } else {
           alert("Failed to create customer.");

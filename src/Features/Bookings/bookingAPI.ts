@@ -24,3 +24,17 @@ export const createBooking = async (newBooking: BookingData) => {
   });
   return response.data;
 };
+
+export const changeBookingStatus = async (id: string, status: string) => {
+  const token = localStorage.getItem("token");
+  const response = await axios.patch(
+    `${API_URL}/update/${id}`,
+    { status },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
