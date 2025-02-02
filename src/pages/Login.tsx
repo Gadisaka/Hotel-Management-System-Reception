@@ -76,6 +76,14 @@ const LoginPage: React.FC = () => {
         >
           Sign in
         </Typography>
+        <Typography
+          variant="h5"
+          fontWeight={400}
+          textAlign="center"
+          gutterBottom
+        >
+          Reception
+        </Typography>
 
         {error && (
           <Alert severity="error" className="mb-4">
