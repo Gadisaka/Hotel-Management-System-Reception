@@ -28,8 +28,46 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Box className="flex min-h-screen items-center justify-center bg-gray-50 p-4 sm:p-8">
-      <Paper className="w-full max-w-md p-8 shadow-md" elevation={3}>
+    <Box className="flex flex-col lg:flex-row min-h-screen gap-3 items-center justify-center bg-gray-50 p-4 sm:p-8">
+      <Box className="absolute top-0 left-0 w-full h-full bg-black opacity-60 z-0" />
+      <Box className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-gray-900 to-gray-800 z-0" />
+      <Box className="z-10 w-full flex flex-col gap-3 items-center max-w-md">
+        <Typography
+          variant="h1"
+          fontWeight={900}
+          textAlign="center"
+          color="white"
+          className=""
+        >
+          Hotelify
+        </Typography>
+        <Box className="z-10 w-full flex flex-col gap-2 items-center justify-center max-w-md">
+          <Typography
+            variant="h4"
+            fontWeight={600}
+            textAlign="center"
+            color="white"
+            className=""
+          >
+            Welcome back!
+          </Typography>
+
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            onClick={() =>
+              (window.location.href =
+                "https://hotel-management-system-admin.onrender.com/")
+            }
+            className="mb-4 animate-bounce"
+          >
+            Admin
+          </Button>
+        </Box>
+      </Box>
+
+      <Paper className="w-full max-w-md p-8 shadow-md z-30" elevation={3}>
         <Typography
           variant="h4"
           fontWeight={600}
